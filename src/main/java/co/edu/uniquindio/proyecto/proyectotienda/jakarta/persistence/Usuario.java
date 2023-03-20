@@ -14,23 +14,17 @@ import java.io.Serializable;
 public class Usuario implements Serializable {
 
     @Id
-    @Column(length = 10)
+    @Column
     @EqualsAndHashCode.Include
-    private String cedula;
-
-
-    @Column(nullable = false, length = 100)
-    private String nombre;
-
-    @Column(unique = true, length = 100, nullable = false)
-    private String email;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int codigoUsuario;
 
     @Column
-    private String telefono;
+    private String direccion;
 
-    @Column(nullable = false, length = 10)
-    private String contrasenia;
-
+    @ManyToOne
+    @JoinColumn(name = "codigo_cuenta", nullable = false)
+    private Cuenta cuenta;
 
     // @Column
     // @GeneratedValue(strategy = GenerationType.AUTO)

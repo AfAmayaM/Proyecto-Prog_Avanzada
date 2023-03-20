@@ -1,17 +1,45 @@
 package co.edu.uniquindio.proyecto.proyectotienda.jakarta.persistence;
 
-public class Producto {
+import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-    private Categoria categoria;
+import java.io.Serializable;
+import java.util.List;
 
-    public static void main(String[] args) {
+@Entity
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class Producto implements Serializable {
+    @Id
+    @Column
+    @EqualsAndHashCode.Include
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int codigo;
 
-        Producto producto = new Producto();
-        producto.categoria = Categoria.TECNOLOGIA;
+    @Column(nullable = false, length = 50)
+    private String nombre;
 
-        System.out.println(producto.categoria.name());
-    }
+    @Column(nullable = false, length = 100)
+    private String descripcion;
+
+    @Column(nullable = false, length = 20)
+    private String estado;
+
+    @Column(nullable = false)
+    private double precio;
+
+    @Column(nullable = false)
+    private int unidadesDisponibles;
+
+    @OneToMany(mappedBy = "producto")
+    private List<Imagen> imagenes;
+
+    @ManyToMany
+    private List<Categoria> categorias;
+
+    @OneToOne(mappedBy = "producto")
+    private Publicacion publicacion;
 }
-
-
 

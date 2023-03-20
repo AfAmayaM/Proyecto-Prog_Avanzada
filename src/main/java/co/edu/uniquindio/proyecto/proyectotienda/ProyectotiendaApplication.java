@@ -10,7 +10,7 @@ public class ProyectotiendaApplication {
     public static void main(String[] args) {
         SpringApplication.run(ProyectotiendaApplication.class, args);
 
-        Usuario us1 = new Usuario();
+
 
     }
 
