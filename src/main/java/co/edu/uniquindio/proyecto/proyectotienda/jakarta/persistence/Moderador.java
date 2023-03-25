@@ -17,7 +17,7 @@ public class Moderador implements Serializable {
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int codigoModerador;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "codigo_cuenta", nullable = false)
     private Cuenta cuenta;
 

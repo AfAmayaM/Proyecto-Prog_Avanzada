@@ -5,10 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -18,6 +15,7 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 @Setter
 @Getter
+@NoArgsConstructor
 public class Comentario implements Serializable {
 
     @Id
