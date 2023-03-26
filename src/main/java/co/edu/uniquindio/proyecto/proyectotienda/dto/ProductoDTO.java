@@ -1,6 +1,6 @@
 package co.edu.uniquindio.proyecto.proyectotienda.dto;
 
-import co.edu.uniquindio.proyecto.proyectotienda.jakarta.persistence.Categoria;
+import co.edu.uniquindio.proyecto.proyectotienda.dominio.Categoria;
 import lombok.*;
 
 import java.util.List;

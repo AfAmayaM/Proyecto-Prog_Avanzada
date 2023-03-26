@@ -1,4 +1,4 @@
-package co.edu.uniquindio.proyecto.proyectotienda.jakarta.persistence;
+package co.edu.uniquindio.proyecto.proyectotienda.dominio;
 
 public enum Categoria {
 

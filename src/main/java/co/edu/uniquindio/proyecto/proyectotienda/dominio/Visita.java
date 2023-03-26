@@ -1,4 +1,4 @@
-package co.edu.uniquindio.proyecto.proyectotienda.jakarta.persistence;
+package co.edu.uniquindio.proyecto.proyectotienda.dominio;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

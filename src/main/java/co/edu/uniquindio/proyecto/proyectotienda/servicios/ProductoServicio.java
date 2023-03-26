@@ -2,7 +2,7 @@ package co.edu.uniquindio.proyecto.proyectotienda.servicios;
 
 import co.edu.uniquindio.proyecto.proyectotienda.dto.ProductoDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.ProductoGetDTO;
-import co.edu.uniquindio.proyecto.proyectotienda.jakarta.persistence.Categoria;
+import co.edu.uniquindio.proyecto.proyectotienda.dominio.Categoria;
 
 import java.util.List;
 

@@ -2,7 +2,6 @@ package co.edu.uniquindio.proyecto.proyectotienda.servicios;
 
 import co.edu.uniquindio.proyecto.proyectotienda.dto.UsuarioDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.UsuarioGetDTO;
-import co.edu.uniquindio.proyecto.proyectotienda.jakarta.persistence.Usuario;
 
 public interface UsuarioServicio {
 

@@ -1,7 +1,7 @@
 package co.edu.uniquindio.proyecto.proyectotienda.repositorios;
 
-import co.edu.uniquindio.proyecto.proyectotienda.jakarta.persistence.Moderador;
-import co.edu.uniquindio.proyecto.proyectotienda.jakarta.persistence.Usuario;
+import co.edu.uniquindio.proyecto.proyectotienda.dominio.Moderador;
+import co.edu.uniquindio.proyecto.proyectotienda.dominio.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
