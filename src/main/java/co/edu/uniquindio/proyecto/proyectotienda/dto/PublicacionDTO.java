@@ -5,10 +5,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
-public class SesionDTO {
+public class PublicacionDTO {
 
-    private  String email;
-    private String password;
-    private int tipo;
-
+    private int codigo;
 }

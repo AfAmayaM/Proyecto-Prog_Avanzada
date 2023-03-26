@@ -5,6 +5,6 @@ import co.edu.uniquindio.proyecto.proyectotienda.dto.TokenDTO;
 
 public interface SesionServicio {
 
-    TokenDTO login(SesionDTO sesionDTO);
-    void logout(int codigoUsuario);
+    TokenDTO login(SesionDTO sesionDTO) throws Exception;
+    void logout(int codigoUsuario) throws Exception;
 }

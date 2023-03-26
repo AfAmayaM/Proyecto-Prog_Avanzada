@@ -19,16 +19,6 @@ public class Cuenta implements Serializable {
     @EqualsAndHashCode.Include
     private int codigo;
 
-    @Column (nullable = false, length = 50)
-    private String nombre;
-
-    @Column (nullable = false, length = 50)
-    private String apellido;
-
-    @Column(length = 10)
-    private String telefono;
-
-
     @Column(nullable = false, length = 10)
     private String estado;
 

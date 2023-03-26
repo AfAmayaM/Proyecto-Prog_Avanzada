@@ -1,12 +1,13 @@
 package co.edu.uniquindio.proyecto.proyectotienda.dto;
 
 import co.edu.uniquindio.proyecto.proyectotienda.jakarta.persistence.Categoria;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @AllArgsConstructor
-
+@Getter
+@Setter
 public class ProductoDTO {
 
     private String nombre;

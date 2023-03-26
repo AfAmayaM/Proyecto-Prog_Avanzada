@@ -1,21 +1,18 @@
 package co.edu.uniquindio.proyecto.proyectotienda.repositorios;
 
+import co.edu.uniquindio.proyecto.proyectotienda.jakarta.persistence.Moderador;
 import co.edu.uniquindio.proyecto.proyectotienda.jakarta.persistence.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UsuarioRepo extends JpaRepository<Usuario, Integer> {
-    @Query("select u from Usuario u where u.cuenta.email = :correo")
-    Usuario buscarUsuario(String correo);
-    @Query("select u from Usuario u where u.cuenta.email = :correo and u.cuenta.contrasenia = :contrasenia")
+public interface ModeradorRepo extends JpaRepository<Moderador, Integer> {
+    @Query("select m from Moderador m where m.cuenta.email = :correo")
+    Usuario buscarModerador(String correo);
+
+    @Query("select m from Moderador m where m.cuenta.email = :correo and m.cuenta.contrasenia = :contrasenia")
     Usuario comprobarAutenticacion(String correo, String contrasenia);
-
-
-
-
-
 
 
 }

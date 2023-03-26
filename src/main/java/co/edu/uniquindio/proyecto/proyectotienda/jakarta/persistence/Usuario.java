@@ -19,10 +19,18 @@ public class Usuario implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int codigoUsuario;
 
+    @Column (nullable = false, length = 50)
+    private String nombre;
+
+    @Column (nullable = false, length = 50)
+    private String apellido;
+
+    @Column(length = 10)
+    private String telefono;
     @Column
     private String direccion;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "codigo_cuenta", nullable = false)
     private Cuenta cuenta;
 
