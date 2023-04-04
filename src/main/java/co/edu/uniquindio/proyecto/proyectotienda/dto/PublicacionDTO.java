@@ -8,4 +8,10 @@ import lombok.*;
 public class PublicacionDTO {
 
     private int codigo;
+
+    private int codigoCuenta;
+
+    private int codigoProducto;
+
+    private int descuento;
 }

@@ -9,5 +9,5 @@ public class DetalleCompraDTO {
 
     private int codigoProducto;
     private int unidades;
-    private float precio;
+    private double precio;
 }

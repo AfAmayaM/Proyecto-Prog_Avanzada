@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyecto.proyectotienda.dto;
 import lombok.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class CompraGetDTO {
 
     private LocalDateTime fecha;
 
-    private float valorTotal;
+    private double valorTotal;
 
     private int codigoUsuario;
 
