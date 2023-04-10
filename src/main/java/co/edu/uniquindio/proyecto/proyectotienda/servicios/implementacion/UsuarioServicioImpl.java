@@ -1,12 +1,22 @@
 package co.edu.uniquindio.proyecto.proyectotienda.servicios.implementacion;
 
+import co.edu.uniquindio.proyecto.proyectotienda.dto.FavoritoDTO;
+import co.edu.uniquindio.proyecto.proyectotienda.dto.PublicacionGetDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.UsuarioDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.UsuarioGetDTO;
+import co.edu.uniquindio.proyecto.proyectotienda.modelo.Estado;
+import co.edu.uniquindio.proyecto.proyectotienda.modelo.Publicacion;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.Usuario;
 import co.edu.uniquindio.proyecto.proyectotienda.repositorios.UsuarioRepo;
+import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.ProductoServicio;
+import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.PublicacionServicio;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.UsuarioServicio;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -14,8 +24,17 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
     private UsuarioRepo usuarioRepo;
 
-    public UsuarioServicioImpl(UsuarioRepo usuarioRepo) {
+    private PublicacionServicio publicacionServicio;
+    
+    private ProductoServicio productoServicio;
+
+    private MessageSource messageSource;
+
+    public UsuarioServicioImpl(UsuarioRepo usuarioRepo, PublicacionServicio publicacionServicio, ProductoServicio productoServicio, MessageSource messageSource) {
         this.usuarioRepo = usuarioRepo;
+        this.publicacionServicio = publicacionServicio;
+        this.productoServicio = productoServicio;
+        this.messageSource = messageSource;
     }
 
     @Override
@@ -23,19 +42,19 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         Usuario buscado = usuarioRepo.buscarUsuarioCorreo(usuarioDTO.getEmail());
 
         if (buscado != null) {
-            throw new Exception("El correo " + usuarioDTO.getEmail() + " ya se encuentra en uso");
+            throw new Exception(messageSource.getMessage("usuario.email.already.exist", new Object[]{usuarioDTO.getEmail()}, LocaleContextHolder.getLocale()));
         }
         Usuario usuario = convertir(usuarioDTO);
-        return usuarioRepo.save(usuario).getCodigoUsuario();
+        usuario.setEstado(Estado.ACTIVA);
+        return usuarioRepo.save(usuario).getCodigo();
     }
 
     @Override
     public UsuarioGetDTO actualizarUsuario(int codigoUsuario, UsuarioDTO usuarioDTO) throws Exception {
-
         validarExiste(codigoUsuario);
-
         Usuario usuario = convertir(usuarioDTO);
-        usuario.setCodigoUsuario(codigoUsuario);
+        usuario.setCodigo(codigoUsuario);
+        usuario.setEstado(usuarioRepo.buscarEstado(codigoUsuario));
         return convertir(usuarioRepo.save(usuario));
     }
 
@@ -47,8 +66,38 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public UsuarioGetDTO obtenerusuario(int codigoUsuario) throws Exception {
+    public FavoritoDTO marcarFavorito(int codigoUsuario, int codigoPublicacion) throws Exception {
+        validarExiste(codigoUsuario);
+        Optional<Usuario> usuarioOpt = usuarioRepo.findById(codigoUsuario);
+        List<PublicacionGetDTO> favoritosGetDTO = publicacionServicio.listarPublicacionFavoritos(codigoUsuario);
+        List<Publicacion> favoritos = new ArrayList<>();
+        for(PublicacionGetDTO pgd : favoritosGetDTO) {
+            Publicacion p = new Publicacion();
+            p.setCodigo(pgd.getCodigo());
+            p.setCuenta(obtenerUsuario(pgd.getCodigoCuenta()));
+            p.setProducto(productoServicio.obtenerProducto(pgd.getCodigoProducto()));
+            p.setDescuento(pgd.getDescuento());
+            p.setEstado(pgd.getEstado());
+            p.setComentarios(pgd.getComentarios());
+            p.setDetalleCompras(pgd.getDetalleCompras());
+            p.setFechaLimite(pgd.getFechaLimite());
+            favoritos.add(p);
+        }
+        favoritos.add(publicacionServicio.obtenerPublicacion(codigoPublicacion));
+        Usuario usuario = usuarioOpt.get();
+        usuario.setFavoritos(favoritos);
+        usuarioRepo.save(usuario);
+        return new FavoritoDTO(codigoUsuario, codigoPublicacion);
+    }
+
+    @Override
+    public UsuarioGetDTO obtenerUsuarioDTO(int codigoUsuario) throws Exception {
         return convertir(obtener(codigoUsuario));
+    }
+
+    @Override
+    public Usuario obtenerUsuario(int codigoUsuario) throws Exception {
+        return obtener(codigoUsuario);
     }
 
     public Usuario obtener(int codigoUsuario) throws Exception {
@@ -69,10 +118,10 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
     private UsuarioGetDTO convertir(Usuario usuario) {
         return new UsuarioGetDTO(
-                usuario.getCodigoUsuario(),
+                //usuario.getCodigoUsuario(),
                 usuario.getNombre(),
                 usuario.getApellido(),
-                usuario.getCuenta().getEmail(),
+                usuario.getEmail(),
                 usuario.getDireccion(),
                 usuario.getTelefono()
         );
@@ -82,10 +131,11 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
         Usuario usuario = new Usuario();
         usuario.setNombre(usuarioDTO.getNombre());
-        usuario.getCuenta().setEmail(usuarioDTO.getEmail());
+        usuario.setApellido(usuarioDTO.getApellido());
+        usuario.setEmail(usuarioDTO.getEmail());
         usuario.setDireccion(usuarioDTO.getDireccion());
         usuario.setTelefono(usuarioDTO.getTelefono());
-        usuario.getCuenta().setContrasenia(usuarioDTO.getContrasenia());
+        usuario.setContrasenia(usuarioDTO.getContrasenia());
 
 
         return usuario;

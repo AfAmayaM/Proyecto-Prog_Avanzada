@@ -26,12 +26,11 @@ public class Publicacion implements Serializable {
     @Column(nullable = false)
     private LocalDateTime fechaLimite;
 
-
     @Column(nullable = false)
     private int descuento;
 
     @Column(nullable = false, length = 1)
-    private String estado;
+    private Estado estado;
 
     @OneToOne
     private Producto producto;
@@ -40,7 +39,7 @@ public class Publicacion implements Serializable {
     private List<Comentario> comentarios;
 
     @ManyToMany(mappedBy = "favoritos")
-    private List<Cuenta> favoritos;
+    private List<Usuario> favoritos;
 
     @OneToMany(mappedBy = "publicacion")
     private List<DetalleCompra> detalleCompras;

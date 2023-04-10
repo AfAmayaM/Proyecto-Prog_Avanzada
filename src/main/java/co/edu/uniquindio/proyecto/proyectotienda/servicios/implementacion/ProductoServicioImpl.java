@@ -5,6 +5,7 @@ import co.edu.uniquindio.proyecto.proyectotienda.dto.ProductoGetDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.Producto;
 import co.edu.uniquindio.proyecto.proyectotienda.repositorios.ProductoRepo;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.ProductoServicio;
+import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.PublicacionServicio;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,10 +28,11 @@ public class ProductoServicioImpl implements ProductoServicio {
     }
 
     @Override
-    public int actualizarProducto(int codigoProducto, ProductoDTO productoDTO) throws Exception {
+    public ProductoGetDTO actualizarProducto(int codigoProducto, ProductoDTO productoDTO) throws Exception {
         validarProducto(codigoProducto);
         Producto producto = convertir(productoDTO);
-        return productoRepo.save(producto).getCodigo();
+        producto.setCodigo(codigoProducto);
+        return convertir(productoRepo.save(producto));
     }
 
     @Override
@@ -97,7 +99,6 @@ public class ProductoServicioImpl implements ProductoServicio {
                 producto.getDescripcion(),
                 producto.getUnidadesDisponibles(),
                 producto.getPrecio(),
-                producto.getPublicacion().getCuenta().getCodigo(),
                 producto.getImagen(),
                 producto.getCategorias()
         );

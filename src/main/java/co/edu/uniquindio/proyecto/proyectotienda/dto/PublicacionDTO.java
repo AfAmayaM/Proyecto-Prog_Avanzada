@@ -7,8 +7,6 @@ import lombok.*;
 @Setter
 public class PublicacionDTO {
 
-    private int codigo;
-
     private int codigoCuenta;
 
     private int codigoProducto;

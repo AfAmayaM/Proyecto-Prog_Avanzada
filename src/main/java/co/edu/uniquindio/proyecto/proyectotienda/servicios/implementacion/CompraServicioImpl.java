@@ -80,14 +80,14 @@ public class CompraServicioImpl implements CompraServicio {
         for (DetalleCompra detalleCompra : compra.getDetalleCompras()) {
             detalleCompraDTO.add(convertir(detalleCompra));
         }
-        CompraGetDTO compraGetDTO = new CompraGetDTO(
+        return new CompraGetDTO(
                 compra.getCodigo(),
                 compra.getFechaCompra(),
                 compra.getTotal(),
                 compra.getCuenta().getCodigo(),
+                compra.getMetodoPago(),
                 detalleCompraDTO
         );
-        return compraGetDTO;
     }
 
     private DetalleCompraDTO convertir(DetalleCompra detalleCompra) {

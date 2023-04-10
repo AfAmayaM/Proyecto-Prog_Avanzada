@@ -2,13 +2,13 @@ package co.edu.uniquindio.proyecto.proyectotienda.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
 public class UsuarioGetDTO {
-
-    private int codigo;
 
     private String nombre;
 
@@ -19,4 +19,5 @@ public class UsuarioGetDTO {
     private String direccion;
 
     private String telefono;
+
 }

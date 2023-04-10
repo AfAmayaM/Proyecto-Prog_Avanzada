@@ -1,15 +1,17 @@
 package co.edu.uniquindio.proyecto.proyectotienda.servicios.implementacion;
 
-import co.edu.uniquindio.proyecto.proyectotienda.dto.ProductoGetDTO;
+import co.edu.uniquindio.proyecto.proyectotienda.dto.ProductoDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.PublicacionDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.PublicacionGetDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.Categoria;
+import co.edu.uniquindio.proyecto.proyectotienda.modelo.Estado;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.Producto;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.Publicacion;
 import co.edu.uniquindio.proyecto.proyectotienda.repositorios.PublicacionRepo;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.CuentaServicio;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.ProductoServicio;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.PublicacionServicio;
+import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.UsuarioServicio;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -33,20 +35,24 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     }
 
     @Override
-    public int crearPublicacion(PublicacionDTO publicacionDTO) throws Exception {
+    public int crearPublicacion(PublicacionDTO publicacionDTO, ProductoDTO productoDTO) throws Exception {
+        publicacionDTO.setCodigoProducto(productoServicio.crearProducto(productoDTO));
+        Producto producto = productoServicio.obtenerProducto(publicacionDTO.getCodigoProducto());
         Publicacion publicacion = convertir(publicacionDTO);
-        publicacion.setFechaLimite(LocalDateTime.now());
+        publicacion.setFechaLimite(LocalDateTime.now().plusMonths(1));
         publicacion.setDescuento(0);
-        publicacion.setEstado("I");
+        publicacion.setEstado(Estado.INACTIVA);
+        producto.setPublicacion(publicacion);
         return publicacionRepo.save(publicacion).getCodigo();
     }
 
     @Override
-    public int actualizarPublicacion(int codigoPublicacion, PublicacionDTO publicacionDTO) throws Exception {
+    public PublicacionGetDTO actualizarPublicacion(int codigoPublicacion, PublicacionDTO publicacionDTO) throws Exception {
         validarPublicacion(codigoPublicacion);
         Publicacion publicacion = convertir(publicacionDTO);
+        publicacion.setEstado(publicacionRepo.buscarEstadoPublicacion(codigoPublicacion));
         publicacion.setCodigo(codigoPublicacion);
-        return publicacionRepo.save(publicacion).getCodigo();
+        return convertir(publicacionRepo.save(publicacion));
     }
 
     @Override
@@ -54,6 +60,15 @@ public class PublicacionServicioImpl implements PublicacionServicio {
         validarPublicacion(codigoPublicacion);
         publicacionRepo.deleteById(codigoPublicacion);
         return codigoPublicacion;
+    }
+
+    @Override
+    public PublicacionGetDTO obtenerPublicacionDTO(int codigoPublicacion) throws Exception {
+        Optional<Publicacion> publicacion = publicacionRepo.findById(codigoPublicacion);
+        if (publicacion.isEmpty()) {
+            throw new Exception("La publicación con el id " + codigoPublicacion + " no existe");
+        }
+        return convertir(publicacion.get());
     }
 
     @Override
@@ -76,15 +91,23 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     }
 
     public List<PublicacionGetDTO> eliminarPublicacionVencida(LocalDateTime date) throws Exception {
-        publicacionRepo.deleteAll(publicacionRepo.obtenerPublicacionVencida(date));
-        return null;
+        List<Publicacion> publicacionesBorrar = publicacionRepo.obtenerPublicacionVencida(date);
+        List<PublicacionGetDTO> publicacionesGetDTO = new ArrayList<>();
+        if (publicacionesBorrar.isEmpty()) {
+            throw new Exception("No hay publicaciones vencidas.");
+        }
+        for (Publicacion p : publicacionesBorrar) {
+            publicacionesGetDTO.add(convertir(p));
+        }
+        publicacionRepo.deleteAll(publicacionesBorrar);
+        return publicacionesGetDTO;
     }
 
     @Override
-    public List<PublicacionGetDTO> listarProductosEstado(String estado) throws Exception {
+    public List<PublicacionGetDTO> listarPublicacionEstado(Estado estado) throws Exception {
         List<Publicacion> publicaciones = publicacionRepo.listarPublicacionEstado(estado);
         List<PublicacionGetDTO> publicacionesGetDTO = new ArrayList<>();
-        for(Publicacion publicacion : publicaciones){
+        for (Publicacion publicacion : publicaciones) {
             publicacionesGetDTO.add(convertir(publicacion));
         }
         return publicacionesGetDTO;
@@ -94,16 +117,17 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     public List<PublicacionGetDTO> listarPublicacionCategoria(Categoria categoria) throws Exception {
         List<Publicacion> publicaciones = publicacionRepo.listarPublicacionCategoria(categoria);
         List<PublicacionGetDTO> publicacionesGetDTO = new ArrayList<>();
-        for(Publicacion publicacion : publicaciones){
+        for (Publicacion publicacion : publicaciones) {
             publicacionesGetDTO.add(convertir(publicacion));
         }
         return publicacionesGetDTO;
     }
+
     @Override
     public List<PublicacionGetDTO> listarPublicacionFavoritos(int codigoUsuario) throws Exception {
         List<Publicacion> publicaciones = publicacionRepo.listarPublicacionFavoritos(codigoUsuario);
         List<PublicacionGetDTO> publicacionesGetDTO = new ArrayList<>();
-        for(Publicacion publicacion : publicaciones){
+        for (Publicacion publicacion : publicaciones) {
             publicacionesGetDTO.add(convertir(publicacion));
         }
         return publicacionesGetDTO;
@@ -132,6 +156,8 @@ public class PublicacionServicioImpl implements PublicacionServicio {
                 publicacion.getFechaLimite(),
                 publicacion.getDescuento(),
                 publicacion.getEstado(),
-                publicacion.getComentarios());
+                publicacion.getComentarios(),
+                publicacion.getDetalleCompras());
     }
 }
+

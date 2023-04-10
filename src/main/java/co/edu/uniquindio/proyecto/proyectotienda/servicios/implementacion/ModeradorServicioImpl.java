@@ -28,16 +28,16 @@ public class ModeradorServicioImpl implements ModeradorServicio {
     public Moderador obtener(int codigoModerador) throws Exception {
         Optional<Moderador> moderador = moderadorRepo.findById(codigoModerador);
         if (moderador.isEmpty()) {
-            throw new Exception("El código " + codigoModerador + " no está asociado a ningún usuario");
+            throw new Exception("El código " + codigoModerador + " no está asociado a ningún moderador");
         }
         return moderador.get();
     }
     private ModeradorGetDTO convertir(Moderador moderador) {
         return new ModeradorGetDTO(
-                moderador.getCodigoModerador(),
+                //moderador.getCodigoModerador(),
                 moderador.getNombre(),
                 moderador.getApellido(),
-                moderador.getCuenta().getEmail(),
+                moderador.getEmail(),
                 moderador.getTelefono()
         );
     }

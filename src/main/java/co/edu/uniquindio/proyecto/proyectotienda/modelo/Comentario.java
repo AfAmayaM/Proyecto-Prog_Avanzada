@@ -1,10 +1,7 @@
 package co.edu.uniquindio.proyecto.proyectotienda.modelo;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
@@ -18,10 +15,11 @@ public class Comentario implements Serializable {
     @Id
     @Column(nullable = false)
     @EqualsAndHashCode.Include
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int codigo;
 
     @ManyToOne
-    private Cuenta cuenta;
+    private Usuario usuario;
 
     @ManyToOne
     private Publicacion publicacion;

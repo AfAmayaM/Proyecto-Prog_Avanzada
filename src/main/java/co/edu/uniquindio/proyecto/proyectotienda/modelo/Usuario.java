@@ -4,17 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Usuario implements Serializable {
-
-    @Id
-    @Column
-    @EqualsAndHashCode.Include
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int codigoUsuario;
+@DiscriminatorValue("Usuario")
+public class Usuario extends Cuenta implements Serializable {
 
     @Column(nullable = false, length = 50)
     private String nombre;
@@ -28,9 +23,14 @@ public class Usuario implements Serializable {
     @Column
     private String direccion;
 
-    @OneToOne
-    @JoinColumn(name = "codigo_cuenta", nullable = false)
-    private Cuenta cuenta;
+    @OneToMany(mappedBy = "usuario")
+    private List<Comentario> comentarios;
+
+    @ManyToMany
+    @JoinTable(name = "favorito",
+            joinColumns = {@JoinColumn(name = "cuenta_codigo")},
+            inverseJoinColumns = {@JoinColumn(name = "publicacion_codigo")})
+    private List<Publicacion> favoritos;
 }
 
 

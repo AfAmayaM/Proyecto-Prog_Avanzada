@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces;
 
+import co.edu.uniquindio.proyecto.proyectotienda.dto.FavoritoDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.Cuenta;
 
 public interface CuentaServicio {

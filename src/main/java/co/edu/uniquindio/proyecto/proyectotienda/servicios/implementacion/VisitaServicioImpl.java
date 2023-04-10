@@ -19,7 +19,7 @@ public class VisitaServicioImpl implements VisitaServicio {
 
     @Override
     public int cantidadVisitas(int codigoPublicacion) throws Exception {
-        publicacionServicio.obtenerPublicacion(codigoPublicacion);
+        publicacionServicio.obtenerPublicacionDTO(codigoPublicacion);
         return visitaRepo.cantidadVisitas(codigoPublicacion);
     }
 }

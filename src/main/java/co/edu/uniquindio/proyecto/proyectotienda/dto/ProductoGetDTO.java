@@ -14,7 +14,6 @@ public class ProductoGetDTO {
     private String descripcion;
     private int unidades;
     private double precio;
-    private int codigoVendedor;
     private List<String> imagenes;
     private List<Categoria> categorias;
 }

@@ -21,6 +21,8 @@ public class ProductoDTO {
     @NotBlank
     @Length(max = 100, message = "La descripcion debe tener maximo 100 caracteres")
     private String descripcion;
+
+    @Length(min = 1)
     private int unidades;
     private float precio;
     private int codigoVendedor;

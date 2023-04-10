@@ -6,7 +6,7 @@ import lombok.*;
 @Setter
 public class ModeradorGetDTO {
 
-    private int codigo;
+    //private int codigo;
 
     private String nombre;
 
