@@ -72,7 +72,7 @@ public class ProductoServicioImpl implements ProductoServicio {
     }
 
     @Override
-    public List<ProductoGetDTO> listarProductosPrecio(float precioMinimo, float precioMaximo) throws Exception {
+    public List<ProductoGetDTO> listarProductosPrecio(double precioMinimo, double precioMaximo) throws Exception {
         List<Producto> productos = productoRepo.listarProductosPrecio(precioMinimo, precioMaximo);
         List<ProductoGetDTO> productoGetDTO = new ArrayList<>();
         for(Producto producto : productos){

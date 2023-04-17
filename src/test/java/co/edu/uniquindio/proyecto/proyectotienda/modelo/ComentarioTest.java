@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -26,8 +27,21 @@ public class ComentarioTest {
     private PublicacionServicio publicacionServicio;
 
     @Test
+    @Sql("classpath:dataset.sql")
     public void crearComentarioTest() throws Exception{
-        UsuarioDTO usuarioDTO = new UsuarioDTO(
+        try {
+            ComentarioDTO comentarioDTO = new ComentarioDTO(
+                    "Buen producto, excelente calidad :)",
+                    1,
+                    2
+            );
+
+            int codigoComentario = comentarioServicio.crearComentario(comentarioDTO);
+            Assertions.assertNotEquals(0, codigoComentario);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        /*UsuarioDTO usuarioDTO = new UsuarioDTO(
                 "Amy",
                 "Baez",
                 "amyBaez@gmail.com",
@@ -49,7 +63,6 @@ public class ComentarioTest {
                 "Play 5 sin juegos",
                 1,
                 3500000,
-                codigoUsuario,
                 Arrays.asList("img1.png", "img2.png"),
                 Arrays.asList(Categoria.TECNOLOGIA, Categoria.ELECTRODOMESTICOS)
         );
@@ -64,12 +77,19 @@ public class ComentarioTest {
 
         int codigoComentario = comentarioServicio.crearComentario(comentarioDTO);
 
-        Assertions.assertNotEquals(0, codigoComentario);
+        Assertions.assertNotEquals(0, codigoComentario);*/
     }
 
     @Test
+    @Sql("classpath:dataset.sql")
     public void listarComentariosPublicacionTest() throws Exception {
-        UsuarioDTO usuarioDTO = new UsuarioDTO(
+        try {
+            List<ComentarioGetDTO> comentarios = comentarioServicio.listarComentariosPublicacion(1);
+            Assertions.assertNotEquals(Collections.EMPTY_LIST, comentarios);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        /*UsuarioDTO usuarioDTO = new UsuarioDTO(
                 "Amy",
                 "Baez",
                 "amyBaez@gmail.com",
@@ -91,7 +111,6 @@ public class ComentarioTest {
                 "Play 5 sin juegos",
                 1,
                 3500000,
-                codigoUsuario,
                 Arrays.asList("img1.png", "img2.png"),
                 Arrays.asList(Categoria.TECNOLOGIA, Categoria.ELECTRODOMESTICOS)
         );
@@ -108,6 +127,6 @@ public class ComentarioTest {
 
         List<ComentarioGetDTO> comentarios = comentarioServicio.listarComentariosPublicacion(codigoPublicacion);
 
-        Assertions.assertNotEquals(Collections.EMPTY_LIST, comentarios);
+        Assertions.assertNotEquals(Collections.EMPTY_LIST, comentarios);*/
     }
 }

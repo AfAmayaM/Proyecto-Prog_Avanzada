@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue("Moderador")
 public class Moderador extends Cuenta implements Serializable {
 

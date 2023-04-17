@@ -8,6 +8,7 @@ import java.util.List;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue("Usuario")
 public class Usuario extends Cuenta implements Serializable {
 

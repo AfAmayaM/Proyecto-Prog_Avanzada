@@ -20,12 +20,12 @@ public class ModeradorServicioImpl implements ModeradorServicio {
     }
 
     @Override
-    public ModeradorGetDTO obtenerModerador(int codigoModerador) throws Exception {
-
-        return convertir(obtener(codigoModerador));
+    public ModeradorGetDTO obtenerModeradorDTO(int codigoModerador) throws Exception {
+        return convertir(obtenerModerador(codigoModerador));
     }
 
-    public Moderador obtener(int codigoModerador) throws Exception {
+    @Override
+    public Moderador obtenerModerador(int codigoModerador) throws Exception {
         Optional<Moderador> moderador = moderadorRepo.findById(codigoModerador);
         if (moderador.isEmpty()) {
             throw new Exception("El código " + codigoModerador + " no está asociado a ningún moderador");

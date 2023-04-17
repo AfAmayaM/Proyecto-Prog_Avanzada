@@ -10,11 +10,15 @@ import java.util.List;
 @ToString
 public class UsuarioGetDTO {
 
+    private int codigoUsuario;
+
     private String nombre;
 
     private String apellido;
 
     private String email;
+
+    private String contrasenia;
 
     private String direccion;
 

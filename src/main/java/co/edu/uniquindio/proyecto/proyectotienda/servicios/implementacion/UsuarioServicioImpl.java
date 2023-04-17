@@ -11,8 +11,7 @@ import co.edu.uniquindio.proyecto.proyectotienda.repositorios.UsuarioRepo;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.ProductoServicio;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.PublicacionServicio;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.UsuarioServicio;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,13 +27,13 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     
     private ProductoServicio productoServicio;
 
-    private MessageSource messageSource;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsuarioServicioImpl(UsuarioRepo usuarioRepo, PublicacionServicio publicacionServicio, ProductoServicio productoServicio, MessageSource messageSource) {
+    public UsuarioServicioImpl(UsuarioRepo usuarioRepo, PublicacionServicio publicacionServicio, ProductoServicio productoServicio, PasswordEncoder passwordEncoder) {
         this.usuarioRepo = usuarioRepo;
         this.publicacionServicio = publicacionServicio;
         this.productoServicio = productoServicio;
-        this.messageSource = messageSource;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -42,9 +41,10 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         Usuario buscado = usuarioRepo.buscarUsuarioCorreo(usuarioDTO.getEmail());
 
         if (buscado != null) {
-            throw new Exception(messageSource.getMessage("usuario.email.already.exist", new Object[]{usuarioDTO.getEmail()}, LocaleContextHolder.getLocale()));
+            throw new Exception("El email ya se encuentra en uso.");
         }
         Usuario usuario = convertir(usuarioDTO);
+        usuario.setContrasenia(passwordEncoder.encode(usuario.getContrasenia()));
         usuario.setEstado(Estado.ACTIVA);
         return usuarioRepo.save(usuario).getCodigo();
     }
@@ -118,10 +118,11 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
     private UsuarioGetDTO convertir(Usuario usuario) {
         return new UsuarioGetDTO(
-                //usuario.getCodigoUsuario(),
+                usuario.getCodigo(),
                 usuario.getNombre(),
                 usuario.getApellido(),
                 usuario.getEmail(),
+                usuario.getContrasenia(),
                 usuario.getDireccion(),
                 usuario.getTelefono()
         );

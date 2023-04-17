@@ -18,8 +18,7 @@ public class VisitaServicioImpl implements VisitaServicio {
     }
 
     @Override
-    public int cantidadVisitas(int codigoPublicacion) throws Exception {
-        publicacionServicio.obtenerPublicacionDTO(codigoPublicacion);
+    public Long cantidadVisitas(int codigoPublicacion) throws Exception {
         return visitaRepo.cantidadVisitas(codigoPublicacion);
     }
 }

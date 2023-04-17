@@ -6,8 +6,7 @@ import lombok.*;
 @Getter
 @Setter
 public class DetalleCompraDTO {
-
-    private int codigoProducto;
+    private int codigoPublicacion;
     private int unidades;
-    private double precio;
+    private double precioUnidad;
 }

@@ -10,7 +10,6 @@ import java.io.Serializable;
 public class DetalleCompra implements Serializable {
 
     @Id
-    @Column
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int codigo;
@@ -18,8 +17,8 @@ public class DetalleCompra implements Serializable {
     private Publicacion publicacion;
     @ManyToOne
     private Compra compra;
-    @Column
+    @Column(nullable = false)
     private int unidades;
-    @Column
-    private double precio;
+    @Column(nullable = false)
+    private double precioUnidad;
 }

@@ -12,6 +12,7 @@ import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.CuentaServ
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.ProductoServicio;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.PublicacionServicio;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.UsuarioServicio;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -50,7 +51,12 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     public PublicacionGetDTO actualizarPublicacion(int codigoPublicacion, PublicacionDTO publicacionDTO) throws Exception {
         validarPublicacion(codigoPublicacion);
         Publicacion publicacion = convertir(publicacionDTO);
-        publicacion.setEstado(publicacionRepo.buscarEstadoPublicacion(codigoPublicacion));
+        Publicacion data = obtenerPublicacion(codigoPublicacion);
+        publicacion.setComentarios(data.getComentarios());
+        publicacion.setEstado(data.getEstado());
+        publicacion.setFechaLimite(data.getFechaLimite());
+        publicacion.setDetalleCompras(data.getDetalleCompras());
+        publicacion.setFavoritos(data.getFavoritos());
         publicacion.setCodigo(codigoPublicacion);
         return convertir(publicacionRepo.save(publicacion));
     }

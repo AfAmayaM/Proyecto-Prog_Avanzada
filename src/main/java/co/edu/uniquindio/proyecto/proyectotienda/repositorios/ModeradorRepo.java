@@ -9,10 +9,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ModeradorRepo extends JpaRepository<Moderador, Integer> {
     @Query("select m from Moderador m where m.email = :correo")
-    Usuario buscarModerador(String correo);
+    Moderador buscarModerador(String correo);
 
     @Query("select m from Moderador m where m.email = :correo and m.contrasenia = :contrasenia")
-    Usuario comprobarAutenticacion(String correo, String contrasenia);
+    Moderador comprobarAutenticacion(String correo, String contrasenia);
 
 
 }

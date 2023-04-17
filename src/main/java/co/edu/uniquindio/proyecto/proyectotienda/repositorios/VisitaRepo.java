@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VisitaRepo extends JpaRepository<Visita, Integer> {
-    @Query("select v.cantidadVisitas from Visita v where v.publicacion.codigo = :codigoPublicacion")
-    int cantidadVisitas(int codigoPublicacion);
+    @Query("select count(v) from Visita v where v.publicacion.codigo = :codigoPublicacion")
+    Long cantidadVisitas(int codigoPublicacion);
 }

@@ -8,7 +8,7 @@ import lombok.*;
 public class ComentarioDTO {
      private String mensaje;
      private int codigoUsuario;
-     private int codigoProducto;
+     private int codigoPublicacion;
 
 
 }

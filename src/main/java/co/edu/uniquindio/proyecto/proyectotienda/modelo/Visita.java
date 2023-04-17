@@ -16,9 +16,6 @@ public class Visita implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int codigoVisita;
 
-    @Column(nullable = false)
-    private int cantidadVisitas;
-
     @ManyToOne
     private Publicacion publicacion;
 

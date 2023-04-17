@@ -24,8 +24,7 @@ public class ProductoDTO {
 
     @Length(min = 1)
     private int unidades;
-    private float precio;
-    private int codigoVendedor;
+    private double precio;
     private List<String> imagenes;
     private List<Categoria> categorias;
 }

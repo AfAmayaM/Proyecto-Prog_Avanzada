@@ -33,25 +33,24 @@ public class CompraServicioImpl implements CompraServicio {
     }
 
     @Override
-    public int crearCompra(CompraDTO compraDTO) throws Exception {
+    public int crearCompra(CompraDTO compraDTO, List<DetalleCompraDTO> detalleCompraDTO) throws Exception {
         Compra compra = new Compra();
         Cuenta cuenta = cuentaServicio.buscarCuenta(compraDTO.getCodigoUsuario());
         compra.setCuenta(cuenta);
         compra.setFechaCompra(LocalDateTime.now());
 
+        List<DetalleCompra> detalleCompras = new ArrayList<>();
         double total = 0;
 
-        for (DetalleCompraDTO dto : compraDTO.getDetalleCompraDTO()) {
-            total += dto.getPrecio();
+        for (DetalleCompraDTO dto : detalleCompraDTO) {
+            int codigoDetalleCompra = detalleCompraServicio.crearDetalleCompra(dto);
+            total += dto.getPrecioUnidad();
+            detalleCompras.add(detalleCompraServicio.buscarDetalleCompra(codigoDetalleCompra));
         }
 
+        compra.setDetalleCompras(detalleCompras);
         compra.setTotal(total);
         compra.setMetodoPago(compraDTO.getMetodoPago());
-        List<DetalleCompra> detalleCompra = new ArrayList<>();
-        for (DetalleCompraDTO detalleCompraDTO : compraDTO.getDetalleCompraDTO()) {
-            detalleCompra.add(convertir(detalleCompraDTO));
-        }
-        compra.setDetalleCompras(detalleCompra);
         return compraRepo.save(compra).getCodigo();
     }
 
@@ -75,10 +74,10 @@ public class CompraServicioImpl implements CompraServicio {
         return compraGetDTO;
     }
 
-    private CompraGetDTO convertir(Compra compra) {
+    private CompraGetDTO convertir(Compra compra) throws Exception {
         List<DetalleCompraDTO> detalleCompraDTO = new ArrayList<>();
         for (DetalleCompra detalleCompra : compra.getDetalleCompras()) {
-            detalleCompraDTO.add(convertir(detalleCompra));
+            detalleCompraDTO.add(detalleCompraServicio.buscarDetalleCompraDTO(detalleCompra.getCodigo()));
         }
         return new CompraGetDTO(
                 compra.getCodigo(),
@@ -88,20 +87,5 @@ public class CompraServicioImpl implements CompraServicio {
                 compra.getMetodoPago(),
                 detalleCompraDTO
         );
-    }
-
-    private DetalleCompraDTO convertir(DetalleCompra detalleCompra) {
-        return new DetalleCompraDTO(
-                detalleCompra.getPublicacion().getProducto().getCodigo(),
-                detalleCompra.getUnidades(),
-                detalleCompra.getPrecio()
-        );
-    }
-
-    private DetalleCompra convertir(DetalleCompraDTO detalleCompraDTO) {
-        DetalleCompra detalleCompra = new DetalleCompra();
-        detalleCompra.setPrecio(detalleCompraDTO.getPrecio());
-        detalleCompra.setUnidades(detalleCompraDTO.getUnidades());
-        return detalleCompra;
     }
 }

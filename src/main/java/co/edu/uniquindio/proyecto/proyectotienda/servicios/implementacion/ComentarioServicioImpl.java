@@ -50,7 +50,7 @@ public class ComentarioServicioImpl implements ComentarioServicio {
         Comentario comentario = new Comentario();
         comentario.setComentario(comentarioDTO.getMensaje());
         comentario.setUsuario(usuarioServicio.obtenerUsuario(comentarioDTO.getCodigoUsuario()));
-        comentario.setPublicacion(publicacionServicio.obtenerPublicacion(comentarioDTO.getCodigoProducto()));
+        comentario.setPublicacion(publicacionServicio.obtenerPublicacion(comentarioDTO.getCodigoPublicacion()));
         return comentario;
     }
 

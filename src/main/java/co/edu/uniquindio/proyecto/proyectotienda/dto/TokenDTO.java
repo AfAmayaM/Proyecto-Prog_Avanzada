@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyecto.proyectotienda.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @AllArgsConstructor
@@ -7,6 +8,6 @@ import lombok.*;
 @Setter
 public class TokenDTO {
 
+    @NotNull
     private  String token;
-    private String estado;
 }
