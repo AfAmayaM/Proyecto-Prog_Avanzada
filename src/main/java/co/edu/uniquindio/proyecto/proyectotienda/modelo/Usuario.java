@@ -21,7 +21,7 @@ public class Usuario extends Cuenta implements Serializable {
     @Column(length = 10)
     private String telefono;
 
-    @Column
+    @Column(nullable = false)
     private String direccion;
 
     @OneToMany(mappedBy = "usuario")

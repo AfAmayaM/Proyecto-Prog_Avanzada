@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyecto.proyectotienda.seguridad.config;
 
+import co.edu.uniquindio.proyecto.proyectotienda.seguridad.servicios.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +18,7 @@ public class BeansConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new UserDetailServiceImpl();
+        return new UserDetailsServiceImpl();
     }
 
     @Bean

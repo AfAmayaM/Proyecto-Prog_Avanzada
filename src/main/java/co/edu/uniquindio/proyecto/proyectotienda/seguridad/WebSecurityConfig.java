@@ -25,8 +25,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.cors();
-        http.authorizeHttpRequests()
-                .requestMatchers("api/auth/**").permitAll()
+        http.authorizeHttpRequests().requestMatchers("/api/auth/**", "/api/usuarios/crear").permitAll()
                 .anyRequest().authenticated();
         http.exceptionHandling().authenticationEntryPoint(jwtEntryPoint);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

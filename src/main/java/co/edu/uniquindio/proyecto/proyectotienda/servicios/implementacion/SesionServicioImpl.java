@@ -34,9 +34,4 @@ public class SesionServicioImpl implements SesionServicio {
 
         return new TokenDTO(jwtToken);
     }
-
-    @Override
-    public void logout(int codigoUsuario) throws Exception {
-
-    }
 }

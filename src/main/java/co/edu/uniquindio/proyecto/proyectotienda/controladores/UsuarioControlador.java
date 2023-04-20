@@ -1,47 +1,52 @@
 package co.edu.uniquindio.proyecto.proyectotienda.controladores;
 
 import co.edu.uniquindio.proyecto.proyectotienda.dto.FavoritoDTO;
+import co.edu.uniquindio.proyecto.proyectotienda.dto.MensajeDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.UsuarioDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.UsuarioGetDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.Usuario;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.UsuarioServicio;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Validated
 @RequestMapping("/api/usuarios")
 @AllArgsConstructor
 public class UsuarioControlador {
 
     private final UsuarioServicio usuarioServicio;
 
-    @PostMapping
-    public int crearUsuario(UsuarioDTO usuarioDTO) throws Exception {
-        return usuarioServicio.crearUsuario(usuarioDTO);
-
+    @PostMapping("/crear")
+    public ResponseEntity<MensajeDTO> crearUsuario(@RequestBody @Valid UsuarioDTO usuarioDTO) throws Exception {
+        usuarioServicio.crearUsuario(usuarioDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new MensajeDTO(HttpStatus.CREATED, false, "Usuario creado correctamente."));
     }
 
-    @PutMapping
-    public UsuarioGetDTO actualizarUsuario(int codigoUsuario, UsuarioDTO usuarioDTO) throws Exception {
-        return usuarioServicio.actualizarUsuario(codigoUsuario, usuarioDTO);
-
+    @PutMapping("/actualizar/{codigoUsuario}")
+    public ResponseEntity<MensajeDTO> actualizarUsuario(@PathVariable int codigoUsuario, @RequestBody @Valid UsuarioDTO usuarioDTO) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, usuarioServicio.actualizarUsuario(codigoUsuario, usuarioDTO)));
     }
 
-    @DeleteMapping
-    public int eliminarUsuario(int coigoUsuario) throws Exception {
-        return usuarioServicio.eliminarUsuario(coigoUsuario);
-
+    @DeleteMapping("/eliminar/{codigoUsuario}")
+    public ResponseEntity<MensajeDTO> eliminarUsuario(@PathVariable int codigoUsuario) throws Exception {
+        usuarioServicio.eliminarUsuario(codigoUsuario);
+        return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, "Usuario eliminado correctamente."));
     }
 
-    @PostMapping
-    public FavoritoDTO marcarFavorito(int codigoCuenta, int codigoPublicacion) throws Exception {
-        return usuarioServicio.marcarFavorito(codigoCuenta, codigoPublicacion);
-
+    @PostMapping("/favorito")
+    public ResponseEntity<MensajeDTO> marcarFavorito(@RequestParam int codigoCuenta, @RequestParam int codigoPublicacion) throws Exception {
+        FavoritoDTO favorito = usuarioServicio.marcarFavorito(codigoCuenta, codigoPublicacion);
+        return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, favorito));
     }
 
-    @GetMapping
-    public UsuarioGetDTO obtenerUsuarioDTO(int codigoUsuario) throws Exception {
-        return usuarioServicio.obtenerUsuarioDTO(codigoUsuario);
-
+    @GetMapping("/obtener/{codigoUsuario}")
+    public ResponseEntity<MensajeDTO> obtenerUsuarioDTO(@PathVariable int codigoUsuario) throws Exception {
+        UsuarioGetDTO usuario = usuarioServicio.obtenerUsuarioDTO(codigoUsuario);
+        return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, usuario));
     }
 }
