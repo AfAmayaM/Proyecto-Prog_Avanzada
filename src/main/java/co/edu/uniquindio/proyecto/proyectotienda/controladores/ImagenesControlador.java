@@ -24,7 +24,7 @@ public class ImagenesControlador {
     @PostMapping("/upload")
     public ResponseEntity<MensajeDTO> subirImagen(@RequestParam("file")MultipartFile file) throws Exception {
         File imagen = cloudinaryServicio.convertir(file);
-        Map respuesta = cloudinaryServicio.subirImagen(imagen, "proyecto");
+        Map respuesta = cloudinaryServicio.subirImagen(imagen, "proyectotienda");
         return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, respuesta));
     }
 
