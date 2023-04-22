@@ -8,4 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CuentaRepo extends JpaRepository<Cuenta, Integer> {
+
+    @Query("select c from Cuenta c where c.email = :email")
+    Cuenta findByEmail(String email);
 }

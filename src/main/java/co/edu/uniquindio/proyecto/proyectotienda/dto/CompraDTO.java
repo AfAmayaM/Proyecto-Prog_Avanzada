@@ -12,4 +12,5 @@ import java.util.List;
 public class CompraDTO {
     private int codigoUsuario;
     private MetodoPago metodoPago;
+    private List<DetalleCompraDTO> detalleCompra;
 }

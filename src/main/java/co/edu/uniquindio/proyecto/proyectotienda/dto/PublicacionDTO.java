@@ -12,4 +12,8 @@ public class PublicacionDTO {
     private int codigoProducto;
 
     private int descuento;
+
+    private ProductoDTO producto;
+
+
 }

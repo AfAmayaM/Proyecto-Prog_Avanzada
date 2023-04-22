@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyecto.proyectotienda.servicios.implementacion;
 
 import co.edu.uniquindio.proyecto.proyectotienda.dto.ProductoDTO;
+import co.edu.uniquindio.proyecto.proyectotienda.dto.ProductoGetDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.PublicacionDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.PublicacionGetDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.Categoria;
@@ -14,6 +15,7 @@ import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.Publicacio
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.UsuarioServicio;
 import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -36,20 +38,23 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     }
 
     @Override
-    public int crearPublicacion(PublicacionDTO publicacionDTO, ProductoDTO productoDTO) throws Exception {
-        publicacionDTO.setCodigoProducto(productoServicio.crearProducto(productoDTO));
-        Producto producto = productoServicio.obtenerProducto(publicacionDTO.getCodigoProducto());
+    @Transactional
+    public int crearPublicacion(PublicacionDTO publicacionDTO) throws Exception {
+        publicacionDTO.setCodigoProducto(productoServicio.crearProducto(publicacionDTO.getProducto()));
         Publicacion publicacion = convertir(publicacionDTO);
         publicacion.setFechaLimite(LocalDateTime.now().plusMonths(1));
         publicacion.setDescuento(0);
         publicacion.setEstado(Estado.INACTIVA);
-        producto.setPublicacion(publicacion);
         return publicacionRepo.save(publicacion).getCodigo();
     }
 
     @Override
+    @Transactional
     public PublicacionGetDTO actualizarPublicacion(int codigoPublicacion, PublicacionDTO publicacionDTO) throws Exception {
         validarPublicacion(codigoPublicacion);
+        Producto producto = obtenerProductoPublicacion(codigoPublicacion);
+        publicacionDTO.setCodigoProducto(producto.getCodigo());
+        productoServicio.actualizarProducto(producto.getCodigo(), publicacionDTO.getProducto());
         Publicacion publicacion = convertir(publicacionDTO);
         Publicacion data = obtenerPublicacion(codigoPublicacion);
         publicacion.setComentarios(data.getComentarios());
@@ -62,6 +67,7 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     }
 
     @Override
+    @Transactional
     public int eliminarPublicacion(int codigoPublicacion) throws Exception {
         validarPublicacion(codigoPublicacion);
         publicacionRepo.deleteById(codigoPublicacion);
@@ -69,6 +75,7 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PublicacionGetDTO obtenerPublicacionDTO(int codigoPublicacion) throws Exception {
         Optional<Publicacion> publicacion = publicacionRepo.findById(codigoPublicacion);
         if (publicacion.isEmpty()) {
@@ -78,12 +85,21 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Publicacion obtenerPublicacion(int codigoPublicacion) throws Exception {
         Optional<Publicacion> publicacion = publicacionRepo.findById(codigoPublicacion);
         if (publicacion.isEmpty()) {
             throw new Exception("La publicación con el id " + codigoPublicacion + " no existe");
         }
         return publicacion.get();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Producto obtenerProductoPublicacion(int codigoPublicacion) throws Exception {
+        validarPublicacion(codigoPublicacion);
+        Producto producto = publicacionRepo.obtenerProductoPublicacion(codigoPublicacion);
+        return producto;
     }
 
     @Override
@@ -96,6 +112,7 @@ public class PublicacionServicioImpl implements PublicacionServicio {
         return publicacionesGetDTO;
     }
 
+    @Override
     public List<PublicacionGetDTO> eliminarPublicacionVencida(LocalDateTime date) throws Exception {
         List<Publicacion> publicacionesBorrar = publicacionRepo.obtenerPublicacionVencida(date);
         List<PublicacionGetDTO> publicacionesGetDTO = new ArrayList<>();
@@ -139,6 +156,26 @@ public class PublicacionServicioImpl implements PublicacionServicio {
         return publicacionesGetDTO;
     }
 
+    @Override
+    public List<PublicacionGetDTO> listarPublicacionNombre(String nombre) throws Exception {
+        List<Publicacion> publicaciones = publicacionRepo.listarPublicacionNombre(nombre);
+        List<PublicacionGetDTO> publicacionesGetDTO = new ArrayList<>();
+        for(Publicacion publicacion : publicaciones){
+            publicacionesGetDTO.add(convertir(publicacion));
+        }
+        return publicacionesGetDTO;
+    }
+
+    @Override
+    public List<PublicacionGetDTO> listarPublicacionPrecio(double precioMinimo, double precioMaximo) throws Exception {
+        List<Publicacion> publicaciones = publicacionRepo.listarPublicacionPrecio(precioMinimo, precioMaximo);
+        List<PublicacionGetDTO> publicacionesGetDTO = new ArrayList<>();
+        for(Publicacion publicacion : publicaciones){
+            publicacionesGetDTO.add(convertir(publicacion));
+        }
+        return publicacionesGetDTO;
+    }
+
     private void validarPublicacion(int codigoPublicacion) throws Exception {
         boolean existe = publicacionRepo.existsById(codigoPublicacion);
         if (!existe) {
@@ -155,6 +192,7 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     }
 
     private PublicacionGetDTO convertir(Publicacion publicacion) {
+        Producto producto = publicacionRepo.obtenerProductoPublicacion(publicacion.getCodigo());
         return new PublicacionGetDTO(
                 publicacion.getCodigo(),
                 publicacion.getCuenta().getCodigo(),
@@ -163,7 +201,16 @@ public class PublicacionServicioImpl implements PublicacionServicio {
                 publicacion.getDescuento(),
                 publicacion.getEstado(),
                 publicacion.getComentarios(),
-                publicacion.getDetalleCompras());
+                publicacion.getDetalleCompras(),
+                new ProductoGetDTO(
+                        producto.getCodigo(),
+                        producto.getNombre(),
+                        producto.getDescripcion(),
+                        producto.getUnidadesDisponibles(),
+                        producto.getPrecio(),
+                        producto.getImagen(),
+                        producto.getCategorias()
+                ));
     }
 }
 

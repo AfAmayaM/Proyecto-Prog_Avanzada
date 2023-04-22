@@ -16,6 +16,9 @@ public interface PublicacionRepo extends JpaRepository<Publicacion, Integer> {
     @Query("select p from Publicacion p where p.cuenta.codigo = :codigoCuenta")
     List<Publicacion> obtenerPublicacionUsuario(int codigoCuenta);
 
+    @Query("select p.producto from Publicacion p where p.codigo = :codigoPublicacion")
+    Producto obtenerProductoPublicacion(int codigoPublicacion);
+
     @Query("Select p.estado from Publicacion p where p.codigo = :codigoPublicacion")
     Estado buscarEstadoPublicacion(int codigoPublicacion);
 
@@ -27,6 +30,12 @@ public interface PublicacionRepo extends JpaRepository<Publicacion, Integer> {
 
     @Query("select p from Publicacion p where p.estado = :estado")
     List<Publicacion> listarPublicacionEstado(Estado estado);
+
+    @Query("select p from Publicacion p where p.producto.nombre like concat('%', :nombreProducto, '%')")
+    List<Publicacion> listarPublicacionNombre(String nombreProducto);
+
+    @Query("select p from Publicacion p where p.producto.precio between :precioMinimo and :precioMaximo")
+    List<Publicacion> listarPublicacionPrecio(double precioMinimo, double precioMaximo);
 
     @Query("select p from Publicacion p join p.producto.categorias c where c = :categoria")
     List<Publicacion> listarPublicacionCategoria(Categoria categoria);

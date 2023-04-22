@@ -46,15 +46,5 @@ public class ProductoControlador {
         return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, producto));
     }
 
-    @GetMapping("/listarNombre")
-    public ResponseEntity<MensajeDTO> listarProductosNombre(@RequestParam String nombre) throws Exception {
-        List<ProductoGetDTO> productos = productoServicio.listarProductosNombre(nombre);
-        return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, productos));
-    }
 
-    @GetMapping("/listarPrecio")
-    public ResponseEntity<MensajeDTO> listarProductosPrecio(@RequestParam double precioMinimo, @RequestParam double precioMaximo) throws Exception {
-        List<ProductoGetDTO> productos = productoServicio.listarProductosPrecio(precioMinimo, precioMaximo);
-        return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, productos));
-    }
 }

@@ -4,13 +4,12 @@ import co.edu.uniquindio.proyecto.proyectotienda.dto.FavoritoDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.PublicacionGetDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.UsuarioDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.UsuarioGetDTO;
+import co.edu.uniquindio.proyecto.proyectotienda.modelo.Cuenta;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.Estado;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.Publicacion;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.Usuario;
 import co.edu.uniquindio.proyecto.proyectotienda.repositorios.UsuarioRepo;
-import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.ProductoServicio;
-import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.PublicacionServicio;
-import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.UsuarioServicio;
+import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,22 +26,23 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     
     private ProductoServicio productoServicio;
 
+    private CuentaServicio cuentaServicio;
+
+    private EmailServicio emailServicio;
+
     private final PasswordEncoder passwordEncoder;
 
-    public UsuarioServicioImpl(UsuarioRepo usuarioRepo, PublicacionServicio publicacionServicio, ProductoServicio productoServicio, PasswordEncoder passwordEncoder) {
+    public UsuarioServicioImpl(UsuarioRepo usuarioRepo, PublicacionServicio publicacionServicio, CuentaServicio cuentaServicio, ProductoServicio productoServicio, PasswordEncoder passwordEncoder) {
         this.usuarioRepo = usuarioRepo;
         this.publicacionServicio = publicacionServicio;
+        this.cuentaServicio = cuentaServicio;
         this.productoServicio = productoServicio;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public int crearUsuario(UsuarioDTO usuarioDTO) throws Exception {
-        Usuario buscado = usuarioRepo.buscarUsuarioCorreo(usuarioDTO.getEmail());
-
-        if (buscado != null) {
-            throw new Exception("El email ya se encuentra en uso.");
-        }
+        cuentaServicio.existeEmail(usuarioDTO.getEmail());
         Usuario usuario = convertir(usuarioDTO);
         usuario.setContrasenia(passwordEncoder.encode(usuario.getContrasenia()));
         usuario.setEstado(Estado.ACTIVA);
@@ -107,7 +107,6 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         }
         return usuario.get();
     }
-
     private void validarExiste(int codigoUsuario) throws Exception {
         boolean existe = usuarioRepo.existsById(codigoUsuario);
         if (!existe) {

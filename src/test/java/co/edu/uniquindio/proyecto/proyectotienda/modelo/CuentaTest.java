@@ -25,4 +25,16 @@ public class CuentaTest {
             throw new RuntimeException(e);
         }
     }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void cambiarContraseniaTest() {
+        try {
+            cuentaServicio.cambiarContrasenia("tomas@mail.com", "tomasito");
+            Cuenta cuenta = cuentaServicio.buscarCuentaEmail("tomas@mail.com");
+            Assertions.assertNotEquals("12345", cuenta.getContrasenia());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyecto.proyectotienda.modelo;
 
 import co.edu.uniquindio.proyecto.proyectotienda.dto.DetalleCompraDTO;
+import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.CompraServicio;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.DetalleCompraServicio;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,16 +17,19 @@ public class DetalleCompraTest {
     @Autowired
     private DetalleCompraServicio detalleCompraServicio;
 
+    @Autowired
+    private CompraServicio compraServicio;
+
     @Test
     @Sql("classpath:dataset.sql")
     public void crearDetalleCompraTest() {
         try {
             DetalleCompraDTO detalleCompraDTO = new DetalleCompraDTO(
                     1,
-                    1,
+                    2,
                     2000000
             );
-            int codigoDetalleCompra = detalleCompraServicio.crearDetalleCompra(detalleCompraDTO);
+            int codigoDetalleCompra = detalleCompraServicio.crearDetalleCompra(detalleCompraDTO, compraServicio.obtenerCompra(1));
             Assertions.assertNotEquals(0, codigoDetalleCompra);
         } catch (Exception e) {
             throw new RuntimeException(e);

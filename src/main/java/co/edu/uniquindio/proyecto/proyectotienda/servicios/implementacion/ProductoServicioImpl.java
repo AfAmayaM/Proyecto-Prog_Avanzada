@@ -4,12 +4,15 @@ import co.edu.uniquindio.proyecto.proyectotienda.dto.ProductoDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.ProductoGetDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.Producto;
 import co.edu.uniquindio.proyecto.proyectotienda.repositorios.ProductoRepo;
+import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.CloudinaryServicio;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.ProductoServicio;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.PublicacionServicio;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -61,25 +64,7 @@ public class ProductoServicioImpl implements ProductoServicio {
     }
 
 
-    @Override
-    public List<ProductoGetDTO> listarProductosNombre(String nombre) throws Exception {
-        List<Producto> productos = productoRepo.listarProductosNombre(nombre);
-        List<ProductoGetDTO> productoGetDTO = new ArrayList<>();
-        for(Producto producto : productos){
-            productoGetDTO.add(convertir(producto));
-        }
-        return productoGetDTO;
-    }
 
-    @Override
-    public List<ProductoGetDTO> listarProductosPrecio(double precioMinimo, double precioMaximo) throws Exception {
-        List<Producto> productos = productoRepo.listarProductosPrecio(precioMinimo, precioMaximo);
-        List<ProductoGetDTO> productoGetDTO = new ArrayList<>();
-        for(Producto producto : productos){
-            productoGetDTO.add(convertir(producto));
-        }
-        return productoGetDTO;
-    }
 
     private Producto convertir(ProductoDTO productoDTO) throws Exception {
         Producto producto = new Producto();

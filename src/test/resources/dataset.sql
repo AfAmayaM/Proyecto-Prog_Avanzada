@@ -1,4 +1,4 @@
-insert into cuenta (rol, estado, email, contrasenia) values ("Usuario", 0, "tomas@mail.com", "12345");
+insert into cuenta (rol, estado, email, contrasenia) values ("Usuario", 0, "tomas@mail.com", "$2a$10$qkPiTIX7rEFvI8HPJLv3GO.hq7aPgU.6DzwUFtU6grFRwSBrhZMWO");
 insert into cuenta (rol, estado, email, contrasenia) values ("Usuario", 0, "didier@mail.com", "54321");
 insert into cuenta (rol, estado, email, contrasenia) values ("Usuario", 0, "cristian@mail.com", "98765");
 insert into cuenta (rol, estado, email, contrasenia) values ("Usuario", 0, "mateo@mail.com", "56789");

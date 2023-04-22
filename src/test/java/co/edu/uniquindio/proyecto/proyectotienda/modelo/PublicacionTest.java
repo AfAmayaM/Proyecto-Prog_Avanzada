@@ -30,11 +30,6 @@ public class PublicacionTest {
     @Sql("classpath:dataset.sql")
     public void crearPublicacionTest() throws Exception{
         try {
-            PublicacionDTO publicacionDTO = new PublicacionDTO(
-                    1,
-                    1,
-                    0
-            );
             ProductoDTO productoDTO = new ProductoDTO(
                     "Papas",
                     "Papas de limon",
@@ -43,7 +38,13 @@ public class PublicacionTest {
                     Arrays.asList("img1.png", "img2.png"),
                     Arrays.asList(Categoria.MERCADO)
             );
-            int codigoPublicacion = publicacionServicio.crearPublicacion(publicacionDTO, productoDTO);
+            PublicacionDTO publicacionDTO = new PublicacionDTO(
+                    1,
+                    1,
+                    0,
+                    productoDTO
+            );
+            int codigoPublicacion = publicacionServicio.crearPublicacion(publicacionDTO);
             Assertions.assertNotEquals(0, codigoPublicacion);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -83,17 +84,23 @@ public class PublicacionTest {
     @Sql("classpath:dataset.sql")
     public void actualizarPublicacionTest() throws Exception {
         try{
-            //Obtenemos un registro de la base de datos y le cambiamos por ejemplo el nombre
+            Producto producto = publicacionServicio.obtenerProductoPublicacion(1);
             PublicacionGetDTO publicacion = publicacionServicio.obtenerPublicacionDTO(1);
             publicacion.setDescuento(40);
-            //Se convierte el objeto (debe crear esta función en ClienteConverter e inyectarlo acá
             PublicacionDTO modificado = new PublicacionDTO(
                     publicacion.getCodigoCuenta(),
                     publicacion.getCodigoProducto(),
-                    publicacion.getDescuento()
+                    publicacion.getDescuento(),
+                    new ProductoDTO(
+                            producto.getNombre(),
+                            producto.getDescripcion(),
+                            producto.getUnidadesDisponibles(),
+                            producto.getPrecio(),
+                            producto.getImagen(),
+                            producto.getCategorias()
+                    )
             );
             publicacionServicio.actualizarPublicacion(publicacion.getCodigo(), modificado);
-            //Obtenemos el publicacion con el código 1 y verificamos que si haya sido modificado
             PublicacionGetDTO consulta = publicacionServicio.obtenerPublicacionDTO(1);
             Assertions.assertEquals(40, consulta.getDescuento());
         }catch (Exception e) {
@@ -434,5 +441,88 @@ public class PublicacionTest {
 
         List<PublicacionGetDTO> publicaciones = publicacionServicio.listarPublicacionFavoritos(codigoUsuario);
         Assertions.assertNotEquals(Collections.EMPTY_LIST, publicaciones);*/
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void listarPublicacionNombreTest() throws Exception {
+        try {
+            List<PublicacionGetDTO> publicaciones = publicacionServicio.listarPublicacionNombre("Camara");
+            Assertions.assertNotEquals(Collections.EMPTY_LIST, publicaciones);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        /*UsuarioDTO usuarioDTO = new UsuarioDTO(
+                "Amy",
+                "Baez",
+                "amyBaez@gmail.com",
+                "12345",
+                "Calle 24 # 2",
+                "091283012"
+        );
+
+        int codigoUsuario = usuarioServicio.crearUsuario(usuarioDTO);
+
+        PublicacionDTO publicacionDTO = new PublicacionDTO(
+                codigoUsuario,
+                1,
+                0
+        );
+
+        ProductoDTO productoDTO = new ProductoDTO(
+                "Papas",
+                "Papas de limon",
+                10,
+                2000,
+                Arrays.asList("img1.png", "img2.png"),
+                Arrays.asList(Categoria.MERCADO)
+        );
+
+        publicacionServicio.crearPublicacion(publicacionDTO, productoDTO);
+
+        List<ProductoGetDTO> productos = productoServicio.listarProductosNombre("papas");
+
+        Assertions.assertNotEquals(Collections.EMPTY_LIST, productos);*/
+    }
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void listarPublicacionPrecioTest()throws Exception{
+        try {
+            List<PublicacionGetDTO> publicaciones = publicacionServicio.listarPublicacionPrecio(1000000, 5000000);
+            Assertions.assertNotEquals(Collections.EMPTY_LIST, publicaciones);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        /*UsuarioDTO usuarioDTO = new UsuarioDTO(
+                "Amy",
+                "Baez",
+                "amyBaez@gmail.com",
+                "12345",
+                "Calle 24 # 2",
+                "091283012"
+        );
+
+        int codigoUsuario = usuarioServicio.crearUsuario(usuarioDTO);
+
+        PublicacionDTO publicacionDTO = new PublicacionDTO(
+                codigoUsuario,
+                1,
+                0
+        );
+
+        ProductoDTO productoDTO = new ProductoDTO(
+                "Papas",
+                "Papas de limon",
+                10,
+                2000,
+                Arrays.asList("img1.png", "img2.png"),
+                Arrays.asList(Categoria.MERCADO)
+        );
+
+        publicacionServicio.crearPublicacion(publicacionDTO, productoDTO);
+
+        List<ProductoGetDTO> productos = productoServicio.listarProductosPrecio(1000, 2000);
+
+        Assertions.assertNotEquals(Collections.EMPTY_LIST, productos);*/
     }
 }

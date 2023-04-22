@@ -31,16 +31,18 @@ public class CompraTest {
     @Sql("classpath:dataset.sql")
     public void crearCompraTest() throws Exception {
         try {
-            CompraDTO compraDTO = new CompraDTO(
-                    1,
-                    MetodoPago.EFECTIVO
-            );
+
             DetalleCompraDTO detalleCompraDTO = new DetalleCompraDTO(
                     2,
-                    1,
-                    2000000
+                    0,
+                    2
             );
-            int codigoCompra = compraServicio.crearCompra(compraDTO, Arrays.asList(detalleCompraDTO));
+            CompraDTO compraDTO = new CompraDTO(
+                    1,
+                    MetodoPago.EFECTIVO,
+                    Arrays.asList(detalleCompraDTO)
+            );
+            int codigoCompra = compraServicio.crearCompra(compraDTO);
             Assertions.assertNotEquals(0, codigoCompra);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -100,7 +102,7 @@ public class CompraTest {
     @Sql("classpath:dataset.sql")
     public void obtenerCompraTest() throws Exception {
         try {
-            CompraGetDTO compra = compraServicio.obtenerCompra(1);
+            CompraGetDTO compra = compraServicio.obtenerCompraDTO(1);
             Assertions.assertNotEquals(0, compra.getValorTotal());
         } catch (Exception e) {
             throw new RuntimeException(e);

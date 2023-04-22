@@ -31,4 +31,6 @@ public class PublicacionGetDTO {
     private List<Comentario> comentarios;
 
     private List<DetalleCompra> detalleCompras;
+
+    private ProductoGetDTO producto;
 }

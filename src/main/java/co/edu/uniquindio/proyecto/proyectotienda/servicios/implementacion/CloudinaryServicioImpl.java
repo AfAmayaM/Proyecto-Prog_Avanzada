@@ -31,7 +31,7 @@ public class CloudinaryServicioImpl implements CloudinaryServicio {
     public Map subirImagen(File file, String carpeta) throws Exception {
         return cloudinary.uploader().upload(file, ObjectUtils.asMap("folder",
                 String.format("proyectotienda/%s", carpeta)));
-       // "co/edu/uniquindio/proyectotienda/%s"
+
     }
 
     @Override

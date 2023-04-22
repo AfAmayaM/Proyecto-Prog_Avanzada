@@ -1,9 +1,6 @@
 package co.edu.uniquindio.proyecto.proyectotienda.controladores;
 
-import co.edu.uniquindio.proyecto.proyectotienda.dto.MensajeDTO;
-import co.edu.uniquindio.proyecto.proyectotienda.dto.ProductoDTO;
-import co.edu.uniquindio.proyecto.proyectotienda.dto.PublicacionDTO;
-import co.edu.uniquindio.proyecto.proyectotienda.dto.PublicacionGetDTO;
+import co.edu.uniquindio.proyecto.proyectotienda.dto.*;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.Categoria;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.Estado;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.Publicacion;
@@ -27,8 +24,8 @@ public class PublicacionControlador {
     private final PublicacionServicio publicacionServicio;
 
     @PostMapping("/crear")
-    public ResponseEntity<MensajeDTO> crearPublicacion(@RequestBody @Valid PublicacionDTO publicacionDTO, @RequestBody @Valid ProductoDTO productoDTO) throws Exception {
-        publicacionServicio.crearPublicacion(publicacionDTO, productoDTO);
+    public ResponseEntity<MensajeDTO> crearPublicacion(@RequestBody @Valid PublicacionDTO publicacionDTO) throws Exception {
+        publicacionServicio.crearPublicacion(publicacionDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(new MensajeDTO(HttpStatus.CREATED, false, "Publicación creada correctamente."));
     }
 
@@ -77,6 +74,18 @@ public class PublicacionControlador {
     @GetMapping("/favoritos/{codigoUsuario}")
     public ResponseEntity<MensajeDTO> listarPublicacionFavoritos(int codigoUsuario) throws Exception {
         List<PublicacionGetDTO> publicaciones =publicacionServicio.listarPublicacionFavoritos(codigoUsuario);
+        return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, publicaciones));
+    }
+
+    @GetMapping("/listarNombre")
+    public ResponseEntity<MensajeDTO> listarPublicacionNombre(@RequestParam String nombre) throws Exception {
+        List<PublicacionGetDTO> publicaciones = publicacionServicio.listarPublicacionNombre(nombre);
+        return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, publicaciones));
+    }
+
+    @GetMapping("/listarPrecio")
+    public ResponseEntity<MensajeDTO> listarPublicacionPrecio(@RequestParam double precioMinimo, @RequestParam double precioMaximo) throws Exception {
+        List<PublicacionGetDTO> publicaciones = publicacionServicio.listarPublicacionPrecio(precioMinimo, precioMaximo);
         return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, publicaciones));
     }
 }

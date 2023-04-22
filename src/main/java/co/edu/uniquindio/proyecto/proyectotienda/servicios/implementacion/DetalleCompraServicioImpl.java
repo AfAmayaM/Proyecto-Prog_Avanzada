@@ -1,9 +1,10 @@
 package co.edu.uniquindio.proyecto.proyectotienda.servicios.implementacion;
 
 import co.edu.uniquindio.proyecto.proyectotienda.dto.DetalleCompraDTO;
+import co.edu.uniquindio.proyecto.proyectotienda.modelo.Compra;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.DetalleCompra;
-import co.edu.uniquindio.proyecto.proyectotienda.modelo.Publicacion;
 import co.edu.uniquindio.proyecto.proyectotienda.repositorios.DetalleCompraRepo;
+import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.CompraServicio;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.DetalleCompraServicio;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.PublicacionServicio;
 import org.springframework.stereotype.Service;
@@ -13,9 +14,9 @@ import java.util.Optional;
 @Service
 public class DetalleCompraServicioImpl implements DetalleCompraServicio {
 
-    private DetalleCompraRepo detalleCompraRepo;
+    private final DetalleCompraRepo detalleCompraRepo;
 
-    private PublicacionServicio publicacionServicio;
+    private final PublicacionServicio publicacionServicio;
 
     public DetalleCompraServicioImpl(DetalleCompraRepo detalleCompraRepo, PublicacionServicio publicacionServicio){
         this.detalleCompraRepo = detalleCompraRepo;
@@ -23,8 +24,9 @@ public class DetalleCompraServicioImpl implements DetalleCompraServicio {
     }
 
     @Override
-    public int crearDetalleCompra(DetalleCompraDTO detalleCompraDTO) throws Exception {
+    public int crearDetalleCompra(DetalleCompraDTO detalleCompraDTO, Compra compra) throws Exception {
         DetalleCompra detalleCompra = convertir(detalleCompraDTO);
+        detalleCompra.setCompra(compra);
         return detalleCompraRepo.save(detalleCompra).getCodigo();
     }
 

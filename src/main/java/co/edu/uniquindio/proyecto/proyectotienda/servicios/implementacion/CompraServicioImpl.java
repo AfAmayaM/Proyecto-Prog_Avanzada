@@ -33,25 +33,30 @@ public class CompraServicioImpl implements CompraServicio {
     }
 
     @Override
-    public int crearCompra(CompraDTO compraDTO, List<DetalleCompraDTO> detalleCompraDTO) throws Exception {
+    public int crearCompra(CompraDTO compraDTO) throws Exception {
         Compra compra = new Compra();
         Cuenta cuenta = cuentaServicio.buscarCuenta(compraDTO.getCodigoUsuario());
         compra.setCuenta(cuenta);
         compra.setFechaCompra(LocalDateTime.now());
+        compra.setMetodoPago(compraDTO.getMetodoPago());
+        compra.setTotal(calcularPrecio(compraDTO.getDetalleCompra(), 0, 0));
 
-        List<DetalleCompra> detalleCompras = new ArrayList<>();
-        double total = 0;
+        int codigoCompra = compraRepo.save(compra).getCodigo();
 
-        for (DetalleCompraDTO dto : detalleCompraDTO) {
-            int codigoDetalleCompra = detalleCompraServicio.crearDetalleCompra(dto);
-            total += dto.getPrecioUnidad();
-            detalleCompras.add(detalleCompraServicio.buscarDetalleCompra(codigoDetalleCompra));
+        for (DetalleCompraDTO dto : compraDTO.getDetalleCompra()) {
+            detalleCompraServicio.crearDetalleCompra(dto, obtenerCompra(codigoCompra));
         }
 
-        compra.setDetalleCompras(detalleCompras);
-        compra.setTotal(total);
-        compra.setMetodoPago(compraDTO.getMetodoPago());
-        return compraRepo.save(compra).getCodigo();
+        return codigoCompra;
+    }
+
+    public double calcularPrecio(List<DetalleCompraDTO> detalleCompra, int i, double total){
+        if(i == detalleCompra.size()){
+            return total;
+        } else {
+            total += detalleCompra.get(i).getPrecioUnidad();
+            return calcularPrecio(detalleCompra, i+1, total);
+        }
     }
 
     @Override
@@ -65,7 +70,16 @@ public class CompraServicioImpl implements CompraServicio {
     }
 
     @Override
-    public CompraGetDTO obtenerCompra(int codigoCompra) throws Exception {
+    public Compra obtenerCompra(int codigoCompra) throws Exception {
+        Optional<Compra> compra = compraRepo.findById(codigoCompra);
+        if (compra.isEmpty()) {
+            throw new Exception("La compra con el id " + codigoCompra + "no existe");
+        }
+        return compra.get();
+    }
+
+    @Override
+    public CompraGetDTO obtenerCompraDTO(int codigoCompra) throws Exception {
         Optional<Compra> compra = compraRepo.findById(codigoCompra);
         if (compra.isEmpty()) {
             throw new Exception("La compra con el id " + codigoCompra + "no existe");

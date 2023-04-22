@@ -21,7 +21,7 @@ public class EmailServicioImpl implements EmailServicio {
 
         try {
             helper.setSubject(emailDTO.getAsunto());
-            helper.setText(emailDTO.getCuerpo(), true);//diseño
+            helper.setText(emailDTO.getCuerpo(), true);
             helper.setTo(emailDTO.getDestinatario());
             helper.setFrom("no-reply@unimarket.com");
 
@@ -31,7 +31,7 @@ public class EmailServicioImpl implements EmailServicio {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;//falso
+        return false;
 
     }
 }
