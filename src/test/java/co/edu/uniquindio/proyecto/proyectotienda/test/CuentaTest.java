@@ -1,5 +1,6 @@
-package co.edu.uniquindio.proyecto.proyectotienda.modelo;
+package co.edu.uniquindio.proyecto.proyectotienda.test;
 
+import co.edu.uniquindio.proyecto.proyectotienda.modelo.Cuenta;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.CuentaServicio;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

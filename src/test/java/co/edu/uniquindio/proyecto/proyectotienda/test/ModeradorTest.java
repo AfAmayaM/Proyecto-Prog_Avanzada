@@ -1,7 +1,9 @@
-package co.edu.uniquindio.proyecto.proyectotienda.modelo;
+package co.edu.uniquindio.proyecto.proyectotienda.test;
 
 import co.edu.uniquindio.proyecto.proyectotienda.dto.PublicacionGetDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.RevisionDTO;
+import co.edu.uniquindio.proyecto.proyectotienda.modelo.EstadoPublicacion;
+import co.edu.uniquindio.proyecto.proyectotienda.modelo.Moderador;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.ModeradorServicio;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.PublicacionServicio;
 import org.junit.jupiter.api.Assertions;

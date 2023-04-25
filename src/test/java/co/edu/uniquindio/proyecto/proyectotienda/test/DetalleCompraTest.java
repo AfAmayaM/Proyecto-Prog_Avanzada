@@ -1,4 +1,4 @@
-package co.edu.uniquindio.proyecto.proyectotienda.modelo;
+package co.edu.uniquindio.proyecto.proyectotienda.test;
 
 import co.edu.uniquindio.proyecto.proyectotienda.dto.DetalleCompraDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.CompraServicio;

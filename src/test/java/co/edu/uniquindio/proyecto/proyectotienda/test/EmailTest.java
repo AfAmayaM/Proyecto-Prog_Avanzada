@@ -1,4 +1,4 @@
-package co.edu.uniquindio.proyecto.proyectotienda.modelo;
+package co.edu.uniquindio.proyecto.proyectotienda.test;
 
 import co.edu.uniquindio.proyecto.proyectotienda.dto.EmailDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.EmailServicio;

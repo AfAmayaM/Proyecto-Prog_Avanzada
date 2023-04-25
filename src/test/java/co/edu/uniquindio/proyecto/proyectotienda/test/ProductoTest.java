@@ -1,6 +1,8 @@
-package co.edu.uniquindio.proyecto.proyectotienda.modelo;
+package co.edu.uniquindio.proyecto.proyectotienda.test;
 
 import co.edu.uniquindio.proyecto.proyectotienda.dto.*;
+import co.edu.uniquindio.proyecto.proyectotienda.modelo.Categoria;
+import co.edu.uniquindio.proyecto.proyectotienda.modelo.Producto;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.ProductoServicio;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.PublicacionServicio;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.UsuarioServicio;

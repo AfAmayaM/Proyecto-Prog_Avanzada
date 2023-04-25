@@ -1,7 +1,8 @@
-package co.edu.uniquindio.proyecto.proyectotienda.modelo;
+package co.edu.uniquindio.proyecto.proyectotienda.test;
 
 import co.edu.uniquindio.proyecto.proyectotienda.dto.UsuarioDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.UsuarioGetDTO;
+import co.edu.uniquindio.proyecto.proyectotienda.modelo.Usuario;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.UsuarioServicio;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
