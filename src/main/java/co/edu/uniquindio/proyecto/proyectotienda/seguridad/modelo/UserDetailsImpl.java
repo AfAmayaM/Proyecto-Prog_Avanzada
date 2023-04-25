@@ -26,6 +26,7 @@ public class UserDetailsImpl implements UserDetails {
             authorities.add(new SimpleGrantedAuthority("CLIENTE"));
         } else if (cuenta instanceof Moderador) {
             authorities.add(new SimpleGrantedAuthority("MODERADOR"));
+            System.out.println("Es moderador...");
         }
         return new UserDetailsImpl(cuenta.getEmail(), cuenta.getContrasenia(), authorities);
     }

@@ -1,10 +1,8 @@
 package co.edu.uniquindio.proyecto.proyectotienda.controladores;
 
-import co.edu.uniquindio.proyecto.proyectotienda.dto.FavoritoDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.MensajeDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.UsuarioDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.UsuarioGetDTO;
-import co.edu.uniquindio.proyecto.proyectotienda.modelo.Usuario;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.UsuarioServicio;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -38,10 +36,16 @@ public class UsuarioControlador {
         return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, "Usuario eliminado correctamente."));
     }
 
-    @PostMapping("/favorito")
+    @PostMapping("/favoritoAgregar")
     public ResponseEntity<MensajeDTO> marcarFavorito(@RequestParam int codigoCuenta, @RequestParam int codigoPublicacion) throws Exception {
-        FavoritoDTO favorito = usuarioServicio.marcarFavorito(codigoCuenta, codigoPublicacion);
-        return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, favorito));
+        usuarioServicio.marcarFavorito(codigoCuenta, codigoPublicacion);
+        return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, "Favorito agregado correctamente."));
+    }
+
+    @DeleteMapping("/favoritoEliminar")
+    public ResponseEntity<MensajeDTO> eliminarFavorito(@RequestParam int codigoCuenta, @RequestParam int codigoPublicacion) throws Exception {
+        usuarioServicio.eliminarFavorito(codigoCuenta, codigoPublicacion);
+        return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, "Favorito eliminado correctamente."));
     }
 
     @GetMapping("/obtener/{codigoUsuario}")

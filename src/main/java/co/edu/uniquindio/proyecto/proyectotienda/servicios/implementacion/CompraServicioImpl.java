@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyecto.proyectotienda.servicios.implementacion;
 
+import co.edu.uniquindio.proyecto.proyectotienda.dto.EmailDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.Compra;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.Cuenta;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.CompraDTO;
@@ -10,6 +11,7 @@ import co.edu.uniquindio.proyecto.proyectotienda.repositorios.CompraRepo;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.CompraServicio;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.CuentaServicio;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.DetalleCompraServicio;
+import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.EmailServicio;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -26,10 +28,13 @@ public class CompraServicioImpl implements CompraServicio {
 
     private DetalleCompraServicio detalleCompraServicio;
 
-    public CompraServicioImpl(CompraRepo compraRepo, CuentaServicio cuentaServicio, DetalleCompraServicio detalleCompraServicio) {
+    private EmailServicio emailServicio;
+
+    public CompraServicioImpl(CompraRepo compraRepo, CuentaServicio cuentaServicio, DetalleCompraServicio detalleCompraServicio, EmailServicio emailServicio) {
         this.compraRepo = compraRepo;
         this.cuentaServicio = cuentaServicio;
         this.detalleCompraServicio = detalleCompraServicio;
+        this.emailServicio = emailServicio;
     }
 
     @Override
@@ -46,6 +51,7 @@ public class CompraServicioImpl implements CompraServicio {
         for (DetalleCompraDTO dto : compraDTO.getDetalleCompra()) {
             detalleCompraServicio.crearDetalleCompra(dto, obtenerCompra(codigoCompra));
         }
+        emailServicio.enviarEmail(new EmailDTO("Compra realizada.", compraDTO.toString(), cuenta.getEmail()));
 
         return codigoCompra;
     }

@@ -1,6 +1,5 @@
 package co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces;
 
-import co.edu.uniquindio.proyecto.proyectotienda.dto.FavoritoDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.UsuarioDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.UsuarioGetDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.Usuario;
@@ -12,7 +11,9 @@ public interface UsuarioServicio {
 
     int eliminarUsuario(int coigoUsuario) throws Exception;
 
-    FavoritoDTO marcarFavorito(int codigoCuenta, int codigoPublicacion) throws Exception;
+    void marcarFavorito(int codigoUsuario, int codigoPublicacion) throws Exception;
+
+    void eliminarFavorito(int codigoUsuario, int codigoPublicacion) throws Exception;
 
     UsuarioGetDTO obtenerUsuarioDTO(int codigoUsuario) throws Exception;
 

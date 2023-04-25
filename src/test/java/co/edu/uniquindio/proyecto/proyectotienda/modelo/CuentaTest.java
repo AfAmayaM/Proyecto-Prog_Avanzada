@@ -20,7 +20,7 @@ public class CuentaTest {
     public void buscarCuentaTest() {
         try {
             Cuenta cuenta = cuentaServicio.buscarCuenta(1);
-            Assertions.assertEquals("12345", cuenta.getContrasenia());
+            Assertions.assertEquals("tomas@mail.com", cuenta.getEmail());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

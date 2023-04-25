@@ -1,9 +1,6 @@
 package co.edu.uniquindio.proyecto.proyectotienda.repositorios;
 
-import co.edu.uniquindio.proyecto.proyectotienda.modelo.Categoria;
-import co.edu.uniquindio.proyecto.proyectotienda.modelo.Estado;
-import co.edu.uniquindio.proyecto.proyectotienda.modelo.Producto;
-import co.edu.uniquindio.proyecto.proyectotienda.modelo.Publicacion;
+import co.edu.uniquindio.proyecto.proyectotienda.modelo.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -20,7 +17,7 @@ public interface PublicacionRepo extends JpaRepository<Publicacion, Integer> {
     Producto obtenerProductoPublicacion(int codigoPublicacion);
 
     @Query("Select p.estado from Publicacion p where p.codigo = :codigoPublicacion")
-    Estado buscarEstadoPublicacion(int codigoPublicacion);
+    EstadoCuenta buscarEstadoPublicacion(int codigoPublicacion);
 
     @Query("select p from Publicacion p where p.fechaLimite < :fechaLimiteCuenta")
     List<Publicacion> obtenerPublicacionVencida(LocalDateTime fechaLimiteCuenta);
@@ -29,7 +26,7 @@ public interface PublicacionRepo extends JpaRepository<Publicacion, Integer> {
     Object[] obtenerFechaLimite(int codigoPublicacion);
 
     @Query("select p from Publicacion p where p.estado = :estado")
-    List<Publicacion> listarPublicacionEstado(Estado estado);
+    List<Publicacion> listarPublicacionEstado(EstadoPublicacion estado);
 
     @Query("select p from Publicacion p where p.producto.nombre like concat('%', :nombreProducto, '%')")
     List<Publicacion> listarPublicacionNombre(String nombreProducto);
@@ -42,5 +39,8 @@ public interface PublicacionRepo extends JpaRepository<Publicacion, Integer> {
 
     @Query("select f from Usuario u join u.favoritos f where u.codigo = :codigoUsuario")
     List<Publicacion> listarPublicacionFavoritos(int codigoUsuario);
+
+    @Query("select count(v) from Usuario u join u.visitas v where v.codigo = :codigoPublicacion")
+    Integer cantidadVisitas(int codigoPublicacion);
 
 }

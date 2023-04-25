@@ -22,14 +22,8 @@ public class ProductoTest {
     @Autowired
     private ProductoServicio productoServicio;
 
-    @Autowired
-    private PublicacionServicio publicacionServicio;
-
-    @Autowired
-    private UsuarioServicio usuarioServicio;
-
     @Test
-    public void crearProductoTest() throws Exception {
+    public void crearProductoTest() {
         try {
             ProductoDTO productoDTO = new ProductoDTO(
                     "Iphone 14",
@@ -48,7 +42,7 @@ public class ProductoTest {
 
     @Test
     @Sql("classpath:dataset.sql")
-    public void actualizarProductoTest() throws Exception {
+    public void actualizarProductoTest() {
         try {
             ProductoGetDTO producto = productoServicio.obtenerProductoDTO(1);
             producto.setNombre("Nuevo producto");
@@ -66,89 +60,27 @@ public class ProductoTest {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        /*UsuarioDTO usuarioDTO = new UsuarioDTO(
-                "Amy",
-                "Baez",
-                "amyBaez@gmail.com",
-                "12345",
-                "Calle 24 # 2",
-                "091283012"
-        );
-
-        int codigoUsuario = usuarioServicio.crearUsuario(usuarioDTO);
-
-        PublicacionDTO publicacionDTO = new PublicacionDTO(
-                codigoUsuario,
-                1,
-                0
-        );
-
-        ProductoDTO productoDTO = new ProductoDTO(
-                "Papas",
-                "Papas de limon",
-                10,
-                2000,
-                codigoUsuario,
-                Arrays.asList("img1.png", "img2.png"),
-                Arrays.asList(Categoria.MERCADO)
-        );
-        int codigoPublicacion = publicacionServicio.crearPublicacion(publicacionDTO, productoDTO);
-        ProductoGetDTO productoActualizado = productoServicio.actualizarProducto(publicacionServicio.obtenerPublicacion(codigoPublicacion).getProducto().getCodigo(), new ProductoDTO(
-                "Play 5",
-                "Play Station 5 pro max plus extra",
-                1,
-                2000000,
-                2,
-                Arrays.asList("img1.png", "img2.png"),
-                Arrays.asList(Categoria.TECNOLOGIA, Categoria.ELECTRODOMESTICOS)
-        ));
-        Assertions.assertNotEquals(0, productoActualizado.getCodigo());*/
     }
 
     @Test
     @Sql("classpath:dataset.sql")
-    public void eliminarProducto() throws Exception {
+    public void eliminarProducto() {
         try {
             productoServicio.eliminarProducto(1);
             Assertions.assertTrue(true);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        /*ProductoDTO productoDTO = new ProductoDTO(
-                "Play 5",
-                "Nuevo",
-                1,
-                2000000,
-                Arrays.asList("Img1.png", "Img2.png"),
-                Arrays.asList(Categoria.TECNOLOGIA)
-
-        );
-
-        int codigoProducto = productoServicio.crearProducto(productoDTO);
-        int codigoEliminado = productoServicio.eliminarProducto(codigoProducto);
-
-        Assertions.assertThrows(Exception.class, () -> productoServicio.obtenerProducto(codigoEliminado));*/
     }
 
     @Test
     @Sql("classpath:dataset.sql")
-    public void obtenerProductoTest() throws Exception {
+    public void obtenerProductoTest() {
         try {
             Producto producto = productoServicio.obtenerProducto(1);
             Assertions.assertEquals(2000000, producto.getPrecio());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        /*ProductoDTO productoDTO = new ProductoDTO(
-                "Play 5",
-                "Nuevo",
-                1,
-                2000000,
-                Arrays.asList("Img1.png", "Img2.png"),
-                Arrays.asList(Categoria.TECNOLOGIA)
-        );
-        int codigoProducto = productoServicio.crearProducto(productoDTO);
-        ProductoGetDTO producto = productoServicio.obtenerProductoDTO(codigoProducto);
-        Assertions.assertNotEquals(0, producto.getCodigo());*/
     }
 }

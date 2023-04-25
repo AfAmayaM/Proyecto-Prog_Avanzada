@@ -1,8 +1,6 @@
 package co.edu.uniquindio.proyecto.proyectotienda.servicios.implementacion;
 
-import co.edu.uniquindio.proyecto.proyectotienda.dto.FavoritoDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.Cuenta;
-import co.edu.uniquindio.proyecto.proyectotienda.modelo.Usuario;
 import co.edu.uniquindio.proyecto.proyectotienda.repositorios.CuentaRepo;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.CuentaServicio;
 import org.springframework.security.crypto.password.PasswordEncoder;

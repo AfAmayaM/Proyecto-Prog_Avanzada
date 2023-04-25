@@ -25,11 +25,11 @@ public class DetalleCompraTest {
     public void crearDetalleCompraTest() {
         try {
             DetalleCompraDTO detalleCompraDTO = new DetalleCompraDTO(
-                    1,
                     2,
-                    2000000
+                    2,
+                    450000
             );
-            int codigoDetalleCompra = detalleCompraServicio.crearDetalleCompra(detalleCompraDTO, compraServicio.obtenerCompra(1));
+            int codigoDetalleCompra = detalleCompraServicio.crearDetalleCompra(detalleCompraDTO, compraServicio.obtenerCompra(2));
             Assertions.assertNotEquals(0, codigoDetalleCompra);
         } catch (Exception e) {
             throw new RuntimeException(e);

@@ -30,7 +30,7 @@ public class Publicacion implements Serializable {
     private int descuento;
 
     @Column(nullable = false, length = 1)
-    private Estado estado;
+    private EstadoPublicacion estado;
 
     @OneToOne
     private Producto producto;
@@ -40,6 +40,9 @@ public class Publicacion implements Serializable {
 
     @ManyToMany(mappedBy = "favoritos")
     private List<Usuario> favoritos;
+
+    @ManyToMany(mappedBy = "visitas")
+    private List<Usuario> visitas;
 
     @OneToMany(mappedBy = "publicacion")
     private List<DetalleCompra> detalleCompras;

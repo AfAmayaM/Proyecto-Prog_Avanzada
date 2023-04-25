@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyecto.proyectotienda.controladores;
 
+import co.edu.uniquindio.proyecto.proyectotienda.dto.ImagenDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.MensajeDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.CloudinaryServicio;
 import lombok.AllArgsConstructor;
@@ -22,15 +23,15 @@ public class ImagenesControlador {
     private final CloudinaryServicio cloudinaryServicio;
 
     @PostMapping("/upload")
-    public ResponseEntity<MensajeDTO> subirImagen(@RequestParam("file")MultipartFile file) throws Exception {
+    public ResponseEntity<MensajeDTO> subirImagen(@RequestParam("file") MultipartFile file) throws Exception {
         File imagen = cloudinaryServicio.convertir(file);
         Map respuesta = cloudinaryServicio.subirImagen(imagen, "proyectotienda");
         return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, respuesta));
     }
 
-    @DeleteMapping("/eliminar/{idImagen}")
-    public ResponseEntity<MensajeDTO> eliminarImagen(@PathVariable String idImagen) throws Exception {
-        Map respuesta = cloudinaryServicio.eliminarImagen(idImagen);
+    @DeleteMapping("/eliminar")
+    public ResponseEntity<MensajeDTO> eliminarImagen(@RequestBody String url) throws Exception {
+        Map respuesta = cloudinaryServicio.eliminarImagen(url);
         return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, respuesta));
     }
 }

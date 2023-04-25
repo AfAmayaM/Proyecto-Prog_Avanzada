@@ -26,7 +26,7 @@ public class SesionServicioImpl implements SesionServicio {
     public TokenDTO login(SesionDTO sesionDTO) throws Exception {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 sesionDTO.getEmail(),
-                sesionDTO.getPassword()
+                sesionDTO.getContrasenia()
         ));
 
         UserDetails user = (UserDetailsImpl) authentication.getPrincipal();

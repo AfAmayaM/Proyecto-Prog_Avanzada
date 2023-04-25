@@ -1,8 +1,9 @@
 package co.edu.uniquindio.proyecto.proyectotienda.modelo;
 
-import co.edu.uniquindio.proyecto.proyectotienda.dto.ModeradorDTO;
-import co.edu.uniquindio.proyecto.proyectotienda.dto.ModeradorGetDTO;
+import co.edu.uniquindio.proyecto.proyectotienda.dto.PublicacionGetDTO;
+import co.edu.uniquindio.proyecto.proyectotienda.dto.RevisionDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.ModeradorServicio;
+import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.PublicacionServicio;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,28 +18,29 @@ public class ModeradorTest {
     @Autowired
     private ModeradorServicio moderadorServicio;
 
+    @Autowired
+    private PublicacionServicio publicacionServicio;
+
     @Test
     @Sql("classpath:dataset.sql")
-    public void obtenerModeradorTest() throws Exception{
+    public void obtenerModeradorTest() {
         try {
             Moderador moderador = moderadorServicio.obtenerModerador(6);
             Assertions.assertEquals("Carlos", moderador.getNombre());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        /*ModeradorDTO moderadorDTO = new ModeradorDTO(
-                "Andres",
-                "Amaya",
-                "andres@gmail.com",
-                "1234567",
-                "3207772437"
+    }
 
-        );
-
-        int codigoModerador = 1;
-
-        ModeradorGetDTO moderador = moderadorServicio.obtenerModerador(codigoModerador);
-
-        Assertions.assertEquals("Juan", moderador.getNombre())*/
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void revisarPublicacionTest() {
+        try {
+            PublicacionGetDTO publicacion = publicacionServicio.obtenerPublicacionDTO(4);
+            PublicacionGetDTO mod = moderadorServicio.revisarPublicacion(new RevisionDTO(4, 4, EstadoPublicacion.AUTORIZADO));
+            Assertions.assertNotEquals(publicacion.getEstado(), mod.getEstado());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

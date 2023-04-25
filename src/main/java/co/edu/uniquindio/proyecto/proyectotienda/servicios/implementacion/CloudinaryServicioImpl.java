@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
+
 @Service
 public class CloudinaryServicioImpl implements CloudinaryServicio {
 
@@ -17,8 +18,7 @@ public class CloudinaryServicioImpl implements CloudinaryServicio {
     private Map<String, String> config;
 
 
-
-    public CloudinaryServicioImpl(){
+    public CloudinaryServicioImpl() {
         Map<String, String> config = new HashMap<>();
         config.put("cloud_name", "dpjvhrfgh");
         config.put("api_key", "962267125175615");
@@ -35,8 +35,8 @@ public class CloudinaryServicioImpl implements CloudinaryServicio {
     }
 
     @Override
-    public Map eliminarImagen(String idImagen) throws Exception {
-        return cloudinary.uploader().destroy(idImagen, ObjectUtils.emptyMap());
+    public Map eliminarImagen(String url) throws Exception {
+        return cloudinary.uploader().destroy(obtenerId(url), ObjectUtils.emptyMap());
     }
 
     @Override
@@ -46,5 +46,11 @@ public class CloudinaryServicioImpl implements CloudinaryServicio {
         fos.write(imagen.getBytes());
         fos.close();
         return file;
+    }
+
+    private String obtenerId(String url) {
+        int inicio = url.indexOf("proyectotienda");
+        int fin = url.lastIndexOf(".");
+        return url.substring(inicio, fin);
     }
 }

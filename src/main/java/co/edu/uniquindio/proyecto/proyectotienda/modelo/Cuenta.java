@@ -21,7 +21,7 @@ public class Cuenta implements Serializable {
     private int codigo;
 
     @Column(nullable = false, length = 10)
-    private Estado estado;
+    private EstadoCuenta estado;
 
     @Column(nullable = false, unique = true, length = 100)
     private String email;

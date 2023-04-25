@@ -1,14 +1,14 @@
 insert into cuenta (rol, estado, email, contrasenia) values ("Usuario", 0, "tomas@mail.com", "$2a$10$qkPiTIX7rEFvI8HPJLv3GO.hq7aPgU.6DzwUFtU6grFRwSBrhZMWO");
 insert into cuenta (rol, estado, email, contrasenia) values ("Usuario", 0, "didier@mail.com", "54321");
 insert into cuenta (rol, estado, email, contrasenia) values ("Usuario", 0, "cristian@mail.com", "98765");
-insert into cuenta (rol, estado, email, contrasenia) values ("Usuario", 0, "mateo@mail.com", "56789");
-insert into cuenta (rol, estado, email, contrasenia) values ("Usuario", 0, "luisa@mail.com", "01928");
+insert into cuenta (rol, estado, email, contrasenia) values ("Usuario", 0, "juanp040223@gmail.com", "56789");
+insert into cuenta (rol, estado, email, contrasenia) values ("Usuario", 0, "andresfelipeamaya077@gmail.com", "01928");
 insert into cuenta (rol, estado, email, contrasenia) values ("Moderador", 0, "carlos@mail.com", "97536");
 
 insert into usuario (codigo, nombre, apellido, telefono, direccion) values (1, "Tomas", "Parra", "019283", "Mz 4 Casa 1");
 insert into usuario (codigo, nombre, apellido, telefono, direccion) values (2, "Didier", "Arrosero", "9274129", "Mz 4 Casa 2");
 insert into usuario (codigo, nombre, apellido, telefono, direccion) values (3, "Cristian", "Gonzales", "1923819", "Mz 4 Casa 3");
-insert into usuario (codigo, nombre, apellido, telefono, direccion) values (4, "Mateo", "Baez", "98329472", "Mz 4 Casa 4");
+insert into usuario (codigo, nombre, apellido, telefono, direccion) values (4, "Juan", "Perez", "98329472", "Mz 4 Casa 4");
 insert into usuario (codigo, nombre, apellido, telefono, direccion) values (5, "Luisa", "Rodriguez", "02834729", "Mz 4 Casa 5");
 
 insert into moderador(codigo, nombre, apellido, telefono) values (6, "Carlos", "Restrepo", "09171623");
@@ -25,11 +25,11 @@ insert into producto_categorias (producto_codigo, categorias) values (3, 0);
 insert into producto_categorias (producto_codigo, categorias) values (4, 0);
 insert into producto_categorias (producto_codigo, categorias) values (5, 0);
 
-insert into publicacion (estado, descuento, fecha_limite, cuenta_codigo, producto_codigo) values (0, 15, "2023-05-11", 1, 1);
+insert into publicacion (estado, descuento, fecha_limite, cuenta_codigo, producto_codigo) values (0, 15, "2023-03-11", 1, 1);
 insert into publicacion (estado, descuento, fecha_limite, cuenta_codigo, producto_codigo) values (0, 0, "2023-05-11", 2, 2);
-insert into publicacion (estado, descuento, fecha_limite, cuenta_codigo, producto_codigo) values (0, 30, "2023-05-11", 3, 3);
+insert into publicacion (estado, descuento, fecha_limite, cuenta_codigo, producto_codigo) values (2, 30, "2023-05-11", 3, 3);
 insert into publicacion (estado, descuento, fecha_limite, cuenta_codigo, producto_codigo) values (0, 23, "2023-05-11", 4, 4);
-insert into publicacion (estado, descuento, fecha_limite, cuenta_codigo, producto_codigo) values (0, 8, "2023-05-11", 5, 5);
+insert into publicacion (estado, descuento, fecha_limite, cuenta_codigo, producto_codigo) values (1, 8, "2023-05-11", 5, 5);
 
 insert into favorito (cuenta_codigo, publicacion_codigo) values (1, 2);
 insert into favorito (cuenta_codigo, publicacion_codigo) values (2, 1);

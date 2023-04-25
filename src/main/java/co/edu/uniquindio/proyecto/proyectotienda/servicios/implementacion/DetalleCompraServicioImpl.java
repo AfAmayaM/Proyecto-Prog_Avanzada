@@ -1,12 +1,11 @@
 package co.edu.uniquindio.proyecto.proyectotienda.servicios.implementacion;
 
 import co.edu.uniquindio.proyecto.proyectotienda.dto.DetalleCompraDTO;
+import co.edu.uniquindio.proyecto.proyectotienda.dto.EmailDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.Compra;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.DetalleCompra;
 import co.edu.uniquindio.proyecto.proyectotienda.repositorios.DetalleCompraRepo;
-import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.CompraServicio;
-import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.DetalleCompraServicio;
-import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.PublicacionServicio;
+import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,15 +17,22 @@ public class DetalleCompraServicioImpl implements DetalleCompraServicio {
 
     private final PublicacionServicio publicacionServicio;
 
-    public DetalleCompraServicioImpl(DetalleCompraRepo detalleCompraRepo, PublicacionServicio publicacionServicio){
+    private EmailServicio emailServicio;
+
+    private CuentaServicio cuentaServicio;
+
+    public DetalleCompraServicioImpl(DetalleCompraRepo detalleCompraRepo, PublicacionServicio publicacionServicio, EmailServicio emailServicio, CuentaServicio cuentaServicio){
         this.detalleCompraRepo = detalleCompraRepo;
         this.publicacionServicio = publicacionServicio;
+        this.emailServicio = emailServicio;
+        this.cuentaServicio = cuentaServicio;
     }
 
     @Override
     public int crearDetalleCompra(DetalleCompraDTO detalleCompraDTO, Compra compra) throws Exception {
         DetalleCompra detalleCompra = convertir(detalleCompraDTO);
         detalleCompra.setCompra(compra);
+        emailServicio.enviarEmail(new EmailDTO("Has vendido un producto.", detalleCompraDTO.toString(), cuentaServicio.buscarCuenta(publicacionServicio.obtenerPublicacionDTO(detalleCompraDTO.getCodigoPublicacion()).getCodigoCuenta()).getEmail()));
         return detalleCompraRepo.save(detalleCompra).getCodigo();
     }
 

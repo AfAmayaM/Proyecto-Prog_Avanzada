@@ -1,17 +1,16 @@
 package co.edu.uniquindio.proyecto.proyectotienda.servicios.implementacion;
 
-import co.edu.uniquindio.proyecto.proyectotienda.dto.FavoritoDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.PublicacionGetDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.UsuarioDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.UsuarioGetDTO;
-import co.edu.uniquindio.proyecto.proyectotienda.modelo.Cuenta;
-import co.edu.uniquindio.proyecto.proyectotienda.modelo.Estado;
+import co.edu.uniquindio.proyecto.proyectotienda.modelo.EstadoCuenta;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.Publicacion;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.Usuario;
 import co.edu.uniquindio.proyecto.proyectotienda.repositorios.UsuarioRepo;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,20 +35,22 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         this.usuarioRepo = usuarioRepo;
         this.publicacionServicio = publicacionServicio;
         this.cuentaServicio = cuentaServicio;
-        this.productoServicio = productoServicio;
+        this.   productoServicio = productoServicio;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
+    @Transactional
     public int crearUsuario(UsuarioDTO usuarioDTO) throws Exception {
         cuentaServicio.existeEmail(usuarioDTO.getEmail());
         Usuario usuario = convertir(usuarioDTO);
         usuario.setContrasenia(passwordEncoder.encode(usuario.getContrasenia()));
-        usuario.setEstado(Estado.ACTIVA);
+        usuario.setEstado(EstadoCuenta.ACTIVA);
         return usuarioRepo.save(usuario).getCodigo();
     }
 
     @Override
+    @Transactional
     public UsuarioGetDTO actualizarUsuario(int codigoUsuario, UsuarioDTO usuarioDTO) throws Exception {
         validarExiste(codigoUsuario);
         Usuario usuario = convertir(usuarioDTO);
@@ -59,6 +60,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
+    @Transactional
     public int eliminarUsuario(int codigoUsuario) throws Exception {
         validarExiste(codigoUsuario);
         usuarioRepo.deleteById(codigoUsuario);
@@ -66,7 +68,8 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public FavoritoDTO marcarFavorito(int codigoUsuario, int codigoPublicacion) throws Exception {
+    @Transactional
+    public void marcarFavorito(int codigoUsuario, int codigoPublicacion) throws Exception {
         validarExiste(codigoUsuario);
         Optional<Usuario> usuarioOpt = usuarioRepo.findById(codigoUsuario);
         List<PublicacionGetDTO> favoritosGetDTO = publicacionServicio.listarPublicacionFavoritos(codigoUsuario);
@@ -87,7 +90,31 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         Usuario usuario = usuarioOpt.get();
         usuario.setFavoritos(favoritos);
         usuarioRepo.save(usuario);
-        return new FavoritoDTO(codigoUsuario, codigoPublicacion);
+    }
+
+    @Override
+    @Transactional
+    public void eliminarFavorito(int codigoUsuario, int codigoPublicacion) throws Exception {
+        validarExiste(codigoUsuario);
+        Optional<Usuario> usuarioOpt = usuarioRepo.findById(codigoUsuario);
+        List<PublicacionGetDTO> favoritosGetDTO = publicacionServicio.listarPublicacionFavoritos(codigoUsuario);
+        List<Publicacion> favoritos = new ArrayList<>();
+        for(PublicacionGetDTO pgd : favoritosGetDTO) {
+            Publicacion p = new Publicacion();
+            p.setCodigo(pgd.getCodigo());
+            p.setCuenta(obtenerUsuario(pgd.getCodigoCuenta()));
+            p.setProducto(productoServicio.obtenerProducto(pgd.getCodigoProducto()));
+            p.setDescuento(pgd.getDescuento());
+            p.setEstado(pgd.getEstado());
+            p.setComentarios(pgd.getComentarios());
+            p.setDetalleCompras(pgd.getDetalleCompras());
+            p.setFechaLimite(pgd.getFechaLimite());
+            favoritos.add(p);
+        }
+        Usuario usuario = usuarioOpt.get();
+        favoritos.remove(publicacionServicio.obtenerPublicacion(codigoPublicacion));
+        usuario.setFavoritos(favoritos);
+        usuarioRepo.save(usuario);
     }
 
     @Override

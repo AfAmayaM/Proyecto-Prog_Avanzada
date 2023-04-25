@@ -1,7 +1,6 @@
 package co.edu.uniquindio.proyecto.proyectotienda.dto;
 
-import co.edu.uniquindio.proyecto.proyectotienda.modelo.Estado;
-import jakarta.validation.constraints.NotNull;
+import co.edu.uniquindio.proyecto.proyectotienda.modelo.EstadoCuenta;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +13,7 @@ public class CuentaGetDTO {
 
     private int codigoCuenta;
 
-    private Estado estado;
+    private EstadoCuenta estado;
 
     private String email;
 

@@ -2,8 +2,8 @@ package co.edu.uniquindio.proyecto.proyectotienda.controladores;
 
 import co.edu.uniquindio.proyecto.proyectotienda.dto.*;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.Categoria;
-import co.edu.uniquindio.proyecto.proyectotienda.modelo.Estado;
-import co.edu.uniquindio.proyecto.proyectotienda.modelo.Publicacion;
+import co.edu.uniquindio.proyecto.proyectotienda.modelo.EstadoCuenta;
+import co.edu.uniquindio.proyecto.proyectotienda.modelo.EstadoPublicacion;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.PublicacionServicio;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -60,7 +61,7 @@ public class PublicacionControlador {
     }
 
     @GetMapping("/listarEstado")
-    public ResponseEntity<MensajeDTO> listarPublicacionEstado(@RequestParam Estado estado) throws Exception {
+    public ResponseEntity<MensajeDTO> listarPublicacionEstado(@RequestParam EstadoPublicacion estado) throws Exception {
         List<PublicacionGetDTO> publicaciones = publicacionServicio.listarPublicacionEstado(estado);
         return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, publicaciones));
     }
@@ -72,7 +73,7 @@ public class PublicacionControlador {
     }
 
     @GetMapping("/favoritos/{codigoUsuario}")
-    public ResponseEntity<MensajeDTO> listarPublicacionFavoritos(int codigoUsuario) throws Exception {
+    public ResponseEntity<MensajeDTO> listarPublicacionFavoritos(@PathVariable int codigoUsuario) throws Exception {
         List<PublicacionGetDTO> publicaciones =publicacionServicio.listarPublicacionFavoritos(codigoUsuario);
         return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, publicaciones));
     }

@@ -1,8 +1,6 @@
 package co.edu.uniquindio.proyecto.proyectotienda.dto;
 
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,11 +20,9 @@ public class PublicacionGetDTO {
 
     private LocalDateTime fechaLimite;
 
-    @Max(100)
-    @Min(0)
     private int descuento;
 
-    private Estado estado;
+    private EstadoPublicacion estado;
 
     private List<Comentario> comentarios;
 

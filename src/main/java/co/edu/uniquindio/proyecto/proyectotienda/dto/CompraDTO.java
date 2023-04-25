@@ -9,6 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class CompraDTO {
     private int codigoUsuario;
     private MetodoPago metodoPago;

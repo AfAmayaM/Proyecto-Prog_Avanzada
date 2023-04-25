@@ -1,22 +1,19 @@
 package co.edu.uniquindio.proyecto.proyectotienda.servicios.implementacion;
 
-import co.edu.uniquindio.proyecto.proyectotienda.dto.ProductoDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.ProductoGetDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.PublicacionDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.PublicacionGetDTO;
-import co.edu.uniquindio.proyecto.proyectotienda.modelo.Categoria;
-import co.edu.uniquindio.proyecto.proyectotienda.modelo.Estado;
-import co.edu.uniquindio.proyecto.proyectotienda.modelo.Producto;
-import co.edu.uniquindio.proyecto.proyectotienda.modelo.Publicacion;
+import co.edu.uniquindio.proyecto.proyectotienda.modelo.*;
 import co.edu.uniquindio.proyecto.proyectotienda.repositorios.PublicacionRepo;
+import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.CloudinaryServicio;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.CuentaServicio;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.ProductoServicio;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.PublicacionServicio;
-import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.UsuarioServicio;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +41,7 @@ public class PublicacionServicioImpl implements PublicacionServicio {
         Publicacion publicacion = convertir(publicacionDTO);
         publicacion.setFechaLimite(LocalDateTime.now().plusMonths(1));
         publicacion.setDescuento(0);
-        publicacion.setEstado(Estado.INACTIVA);
+        publicacion.setEstado(EstadoPublicacion.SIN_REVISAR);
         return publicacionRepo.save(publicacion).getCodigo();
     }
 
@@ -54,15 +51,22 @@ public class PublicacionServicioImpl implements PublicacionServicio {
         validarPublicacion(codigoPublicacion);
         Producto producto = obtenerProductoPublicacion(codigoPublicacion);
         publicacionDTO.setCodigoProducto(producto.getCodigo());
-        productoServicio.actualizarProducto(producto.getCodigo(), publicacionDTO.getProducto());
+        productoServicio.actualizarProducto(publicacionDTO.getCodigoProducto(), publicacionDTO.getProducto());
         Publicacion publicacion = convertir(publicacionDTO);
         Publicacion data = obtenerPublicacion(codigoPublicacion);
-        publicacion.setComentarios(data.getComentarios());
         publicacion.setEstado(data.getEstado());
+        publicacion.setComentarios(data.getComentarios());
         publicacion.setFechaLimite(data.getFechaLimite());
         publicacion.setDetalleCompras(data.getDetalleCompras());
         publicacion.setFavoritos(data.getFavoritos());
         publicacion.setCodigo(codigoPublicacion);
+        return convertir(publicacionRepo.save(publicacion));
+    }
+
+    @Override
+    public PublicacionGetDTO actualizarEstado(int codigoPublicacion, EstadoPublicacion estado) throws Exception {
+        Publicacion publicacion = obtenerPublicacion(codigoPublicacion);
+        publicacion.setEstado(estado);
         return convertir(publicacionRepo.save(publicacion));
     }
 
@@ -77,9 +81,11 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     @Override
     @Transactional(readOnly = true)
     public PublicacionGetDTO obtenerPublicacionDTO(int codigoPublicacion) throws Exception {
+        validarPublicacion(codigoPublicacion);
         Optional<Publicacion> publicacion = publicacionRepo.findById(codigoPublicacion);
-        if (publicacion.isEmpty()) {
-            throw new Exception("La publicación con el id " + codigoPublicacion + " no existe");
+        LocalDateTime fechaLimite = publicacion.get().getFechaLimite();
+        if (fechaLimite.isBefore(LocalDateTime.now())) {
+            throw new Exception("La publicación con el codigo " + codigoPublicacion + " expiró el " + fechaLimite);
         }
         return convertir(publicacion.get());
     }
@@ -87,9 +93,11 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     @Override
     @Transactional(readOnly = true)
     public Publicacion obtenerPublicacion(int codigoPublicacion) throws Exception {
+        validarPublicacion(codigoPublicacion);
         Optional<Publicacion> publicacion = publicacionRepo.findById(codigoPublicacion);
-        if (publicacion.isEmpty()) {
-            throw new Exception("La publicación con el id " + codigoPublicacion + " no existe");
+        LocalDateTime fechaLimite = publicacion.get().getFechaLimite();
+        if (fechaLimite.isBefore(LocalDateTime.now())) {
+            throw new Exception("La publicación con el codigo " + codigoPublicacion + " expiró el " + fechaLimite);
         }
         return publicacion.get();
     }
@@ -127,7 +135,7 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     }
 
     @Override
-    public List<PublicacionGetDTO> listarPublicacionEstado(Estado estado) throws Exception {
+    public List<PublicacionGetDTO> listarPublicacionEstado(EstadoPublicacion estado) throws Exception {
         List<Publicacion> publicaciones = publicacionRepo.listarPublicacionEstado(estado);
         List<PublicacionGetDTO> publicacionesGetDTO = new ArrayList<>();
         for (Publicacion publicacion : publicaciones) {
@@ -176,10 +184,18 @@ public class PublicacionServicioImpl implements PublicacionServicio {
         return publicacionesGetDTO;
     }
 
+    @Override
+    public int cantidadVisitas(int codigoPublicacion) throws Exception {
+        validarPublicacion(codigoPublicacion);
+        return publicacionRepo.cantidadVisitas(codigoPublicacion);
+    }
+
     private void validarPublicacion(int codigoPublicacion) throws Exception {
         boolean existe = publicacionRepo.existsById(codigoPublicacion);
         if (!existe) {
             throw new Exception("La publicación con el id " + codigoPublicacion + " no existe");
+
+
         }
     }
 

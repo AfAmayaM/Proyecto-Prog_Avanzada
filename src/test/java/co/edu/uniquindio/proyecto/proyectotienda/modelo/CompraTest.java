@@ -21,24 +21,18 @@ public class CompraTest {
     @Autowired
     private CompraServicio compraServicio;
 
-    @Autowired
-    private UsuarioServicio usuarioServicio;
-
-    @Autowired
-    private PublicacionServicio publicacionServicio;
-
     @Test
     @Sql("classpath:dataset.sql")
-    public void crearCompraTest() throws Exception {
+    public void crearCompraTest() {
         try {
 
             DetalleCompraDTO detalleCompraDTO = new DetalleCompraDTO(
-                    2,
+                    5,
                     0,
                     2
             );
             CompraDTO compraDTO = new CompraDTO(
-                    1,
+                    4,
                     MetodoPago.EFECTIVO,
                     Arrays.asList(detalleCompraDTO)
             );
@@ -47,49 +41,11 @@ public class CompraTest {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        /*UsuarioDTO usuarioDTO = new UsuarioDTO(
-                "Amy",
-                "Baez",
-                "amyBaez@gmail.com",
-                "12345",
-                "Calle 24 # 2",
-                "091283012"
-        );
-
-        int codigoUsuario = usuarioServicio.crearUsuario(usuarioDTO);
-
-        UsuarioDTO usuarioDTO2 = new UsuarioDTO(
-                "Andres",
-                "Amaya",
-                "aamaya@gmail.com",
-                "12345",
-                "Calle 24 # 2",
-                "947281321"
-        );
-
-        int codigoUsuario2 = usuarioServicio.crearUsuario(usuarioDTO2);
-
-        PublicacionDTO publicacionDTO = new PublicacionDTO(
-                codigoUsuario,
-                0,
-                0
-        );
-
-        ProductoDTO productoDTO = new ProductoDTO(
-                "Play 2",
-                "Play 5 sin juegos",
-                1,
-                3500000,
-                Arrays.asList("img1.png", "img2.png"),
-                Arrays.asList(Categoria.TECNOLOGIA, Categoria.ELECTRODOMESTICOS)
-        );
-
-        int codigoPublicacion = publicacionServicio.crearPublicacion(publicacionDTO, productoDTO);*/
     }
 
     @Test
     @Sql("classpath:dataset.sql")
-    public void listarComprasTest() throws Exception {
+    public void listarComprasTest() {
         try {
             List<CompraGetDTO> compras = compraServicio.listarCompras(1);
             Assertions.assertNotEquals(Collections.EMPTY_LIST, compras);
@@ -100,7 +56,7 @@ public class CompraTest {
 
     @Test
     @Sql("classpath:dataset.sql")
-    public void obtenerCompraTest() throws Exception {
+    public void obtenerCompraTest() {
         try {
             CompraGetDTO compra = compraServicio.obtenerCompraDTO(1);
             Assertions.assertNotEquals(0, compra.getValorTotal());

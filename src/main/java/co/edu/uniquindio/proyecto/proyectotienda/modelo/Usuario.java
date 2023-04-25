@@ -32,6 +32,12 @@ public class Usuario extends Cuenta implements Serializable {
             joinColumns = {@JoinColumn(name = "cuenta_codigo")},
             inverseJoinColumns = {@JoinColumn(name = "publicacion_codigo")})
     private List<Publicacion> favoritos;
+
+    @ManyToMany
+    @JoinTable(name = "visita",
+            joinColumns = {@JoinColumn(name = "cuenta_codigo")},
+            inverseJoinColumns = {@JoinColumn(name = "publicacion_codigo")})
+    private List<Publicacion> visitas;
 }
 
 
