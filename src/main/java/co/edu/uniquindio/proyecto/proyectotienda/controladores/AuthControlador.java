@@ -21,18 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 public class AuthControlador {
 
-    private final UsuarioServicio usuarioServicio;
-
     private final SesionServicio sesionServicio;
 
     @PostMapping("/login")
     public ResponseEntity<MensajeDTO> login(@RequestBody @Valid SesionDTO sesionDTO) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, sesionServicio.login(sesionDTO)));
-    }
-
-    @PostMapping("/registro")
-    public ResponseEntity<MensajeDTO> registrarUsuario(@RequestBody @Valid UsuarioDTO usuarioDTO) throws Exception {
-        usuarioServicio.crearUsuario(usuarioDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new MensajeDTO(HttpStatus.CREATED, false, "Usuario creado correctamente."));
     }
 }

@@ -9,8 +9,6 @@ public class PublicacionDTO {
 
     private int codigoCuenta;
 
-    private int codigoProducto;
-
     private int descuento;
 
     private ProductoDTO producto;

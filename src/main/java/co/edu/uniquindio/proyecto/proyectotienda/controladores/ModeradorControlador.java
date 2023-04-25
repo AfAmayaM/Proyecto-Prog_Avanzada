@@ -22,7 +22,7 @@ public class ModeradorControlador {
     private ModeradorServicio moderadorServicio;
 
     @PutMapping("/revisarPublicacion")
-    public ResponseEntity<MensajeDTO> revisar(@RequestBody RevisionDTO revisionDTO) throws Exception{
+    public ResponseEntity<MensajeDTO> revisar(@RequestBody RevisionDTO revisionDTO) throws Exception {
         PublicacionGetDTO publicacion = moderadorServicio.revisarPublicacion(revisionDTO);
         return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, publicacion));
     }

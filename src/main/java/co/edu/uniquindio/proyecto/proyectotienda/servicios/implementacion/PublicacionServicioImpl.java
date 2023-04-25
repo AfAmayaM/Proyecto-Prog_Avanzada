@@ -37,7 +37,6 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     @Override
     @Transactional
     public int crearPublicacion(PublicacionDTO publicacionDTO) throws Exception {
-        publicacionDTO.setCodigoProducto(productoServicio.crearProducto(publicacionDTO.getProducto()));
         Publicacion publicacion = convertir(publicacionDTO);
         publicacion.setFechaLimite(LocalDateTime.now().plusMonths(1));
         publicacion.setDescuento(0);
@@ -50,8 +49,7 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     public PublicacionGetDTO actualizarPublicacion(int codigoPublicacion, PublicacionDTO publicacionDTO) throws Exception {
         validarPublicacion(codigoPublicacion);
         Producto producto = obtenerProductoPublicacion(codigoPublicacion);
-        publicacionDTO.setCodigoProducto(producto.getCodigo());
-        productoServicio.actualizarProducto(publicacionDTO.getCodigoProducto(), publicacionDTO.getProducto());
+        productoServicio.actualizarProducto(producto.getCodigo(), publicacionDTO.getProducto());
         Publicacion publicacion = convertir(publicacionDTO);
         Publicacion data = obtenerPublicacion(codigoPublicacion);
         publicacion.setEstado(data.getEstado());
@@ -202,7 +200,8 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     private Publicacion convertir(PublicacionDTO publicacionDTO) throws Exception {
         Publicacion publicacion = new Publicacion();
         publicacion.setCuenta(cuentaServicio.buscarCuenta(publicacionDTO.getCodigoCuenta()));
-        publicacion.setProducto(productoServicio.obtenerProducto(publicacionDTO.getCodigoProducto()));
+        int codProductoCreado = productoServicio.crearProducto(publicacionDTO.getProducto());
+        publicacion.setProducto(productoServicio.obtenerProducto(codProductoCreado));
         publicacion.setDescuento(publicacionDTO.getDescuento());
         return publicacion;
     }

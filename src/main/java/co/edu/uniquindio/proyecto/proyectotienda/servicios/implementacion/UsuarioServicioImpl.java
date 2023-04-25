@@ -35,7 +35,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         this.usuarioRepo = usuarioRepo;
         this.publicacionServicio = publicacionServicio;
         this.cuentaServicio = cuentaServicio;
-        this.   productoServicio = productoServicio;
+        this.  productoServicio = productoServicio;
         this.passwordEncoder = passwordEncoder;
     }
 

@@ -36,6 +36,12 @@ public class UsuarioControlador {
         return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, "Usuario eliminado correctamente."));
     }
 
+    @GetMapping("/obtener/{codigoUsuario}")
+    public ResponseEntity<MensajeDTO> obtenerUsuarioDTO(@PathVariable int codigoUsuario) throws Exception {
+        UsuarioGetDTO usuario = usuarioServicio.obtenerUsuarioDTO(codigoUsuario);
+        return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, usuario));
+    }
+
     @PostMapping("/favoritoAgregar")
     public ResponseEntity<MensajeDTO> marcarFavorito(@RequestParam int codigoCuenta, @RequestParam int codigoPublicacion) throws Exception {
         usuarioServicio.marcarFavorito(codigoCuenta, codigoPublicacion);
@@ -46,11 +52,5 @@ public class UsuarioControlador {
     public ResponseEntity<MensajeDTO> eliminarFavorito(@RequestParam int codigoCuenta, @RequestParam int codigoPublicacion) throws Exception {
         usuarioServicio.eliminarFavorito(codigoCuenta, codigoPublicacion);
         return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, "Favorito eliminado correctamente."));
-    }
-
-    @GetMapping("/obtener/{codigoUsuario}")
-    public ResponseEntity<MensajeDTO> obtenerUsuarioDTO(@PathVariable int codigoUsuario) throws Exception {
-        UsuarioGetDTO usuario = usuarioServicio.obtenerUsuarioDTO(codigoUsuario);
-        return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, usuario));
     }
 }

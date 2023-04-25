@@ -54,12 +54,6 @@ public class PublicacionControlador {
         return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, publicaciones));
     }
 
-    @DeleteMapping("/eliminarVencida")
-    public ResponseEntity<MensajeDTO> eliminarPublicacionVencida(@RequestParam LocalDateTime fechaLimiteCuenta) throws Exception {
-        List<PublicacionGetDTO> publicaciones = publicacionServicio.eliminarPublicacionVencida(fechaLimiteCuenta);
-        return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, publicaciones));
-    }
-
     @GetMapping("/listarEstado")
     public ResponseEntity<MensajeDTO> listarPublicacionEstado(@RequestParam EstadoPublicacion estado) throws Exception {
         List<PublicacionGetDTO> publicaciones = publicacionServicio.listarPublicacionEstado(estado);

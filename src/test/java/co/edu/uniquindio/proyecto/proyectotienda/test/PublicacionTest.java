@@ -40,7 +40,6 @@ public class PublicacionTest {
             );
             PublicacionDTO publicacionDTO = new PublicacionDTO(
                     1,
-                    1,
                     0,
                     productoDTO
             );
@@ -55,20 +54,18 @@ public class PublicacionTest {
     @Sql("classpath:dataset.sql")
     public void actualizarPublicacionTest() {
         try{
-            Producto producto = publicacionServicio.obtenerProductoPublicacion(4);
             PublicacionGetDTO publicacion = publicacionServicio.obtenerPublicacionDTO(4);
             publicacion.setDescuento(40);
             PublicacionDTO modificado = new PublicacionDTO(
                     publicacion.getCodigoCuenta(),
-                    publicacion.getCodigoProducto(),
                     publicacion.getDescuento(),
                     new ProductoDTO(
-                            producto.getNombre(),
-                            producto.getDescripcion(),
-                            producto.getUnidadesDisponibles(),
-                            producto.getPrecio(),
-                            producto.getImagen(),
-                            producto.getCategorias()
+                            "Camara",
+                            "Usado",
+                            3,
+                            150000,
+                            Arrays.asList("img.png"),
+                            Arrays.asList(Categoria.TECNOLOGIA)
                     )
             );
             publicacionServicio.actualizarPublicacion(publicacion.getCodigo(), modificado);
