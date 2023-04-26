@@ -7,6 +7,7 @@ import co.edu.uniquindio.proyecto.proyectotienda.modelo.Usuario;
 public interface UsuarioServicio {
 
     int crearUsuario(UsuarioDTO usuarioDTO) throws Exception;
+
     UsuarioGetDTO actualizarUsuario(int codigoUsuario, UsuarioDTO usuarioDTO) throws Exception;
 
     int eliminarUsuario(int coigoUsuario) throws Exception;

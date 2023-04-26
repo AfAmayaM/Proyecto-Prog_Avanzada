@@ -54,6 +54,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     public UsuarioGetDTO actualizarUsuario(int codigoUsuario, UsuarioDTO usuarioDTO) throws Exception {
         validarExiste(codigoUsuario);
         Usuario usuario = convertir(usuarioDTO);
+        usuario.setContrasenia(passwordEncoder.encode(usuarioDTO.getContrasenia()));
         usuario.setCodigo(codigoUsuario);
         usuario.setEstado(usuarioRepo.buscarEstado(codigoUsuario));
         return convertir(usuarioRepo.save(usuario));

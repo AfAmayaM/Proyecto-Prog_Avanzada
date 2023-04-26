@@ -16,14 +16,8 @@ public interface PublicacionRepo extends JpaRepository<Publicacion, Integer> {
     @Query("select p.producto from Publicacion p where p.codigo = :codigoPublicacion")
     Producto obtenerProductoPublicacion(int codigoPublicacion);
 
-    @Query("Select p.estado from Publicacion p where p.codigo = :codigoPublicacion")
-    EstadoCuenta buscarEstadoPublicacion(int codigoPublicacion);
-
     @Query("select p from Publicacion p where p.fechaLimite < :fechaLimiteCuenta")
     List<Publicacion> obtenerPublicacionVencida(LocalDateTime fechaLimiteCuenta);
-
-    @Query("select p.fechaLimite from Publicacion p where p.codigo = :codigoPublicacion")
-    Object[] obtenerFechaLimite(int codigoPublicacion);
 
     @Query("select p from Publicacion p where p.estado = :estado")
     List<Publicacion> listarPublicacionEstado(EstadoPublicacion estado);

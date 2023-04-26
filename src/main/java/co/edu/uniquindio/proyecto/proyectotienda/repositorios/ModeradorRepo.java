@@ -11,8 +11,5 @@ public interface ModeradorRepo extends JpaRepository<Moderador, Integer> {
     @Query("select m from Moderador m where m.email = :correo")
     Moderador buscarModerador(String correo);
 
-    @Query("select m from Moderador m where m.email = :correo and m.contrasenia = :contrasenia")
-    Moderador comprobarAutenticacion(String correo, String contrasenia);
-
 
 }
