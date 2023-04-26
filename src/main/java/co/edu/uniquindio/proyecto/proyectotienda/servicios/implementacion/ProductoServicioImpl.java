@@ -63,7 +63,12 @@ public class ProductoServicioImpl implements ProductoServicio {
         return producto.get();
     }
 
-
+    @Override
+    public ProductoGetDTO actualizarUnidades(int codigoProducto, int unidadesDescontar) throws Exception {
+        Producto producto = obtenerProducto(codigoProducto);
+        producto.setUnidadesDisponibles(producto.getUnidadesDisponibles() - unidadesDescontar);
+        return convertir(productoRepo.save(producto));
+    }
 
 
     private Producto convertir(ProductoDTO productoDTO) throws Exception {

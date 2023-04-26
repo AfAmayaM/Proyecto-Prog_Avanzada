@@ -50,18 +50,19 @@ public class CompraServicioImpl implements CompraServicio {
 
         for (DetalleCompraDTO dto : compraDTO.getDetalleCompra()) {
             detalleCompraServicio.crearDetalleCompra(dto, obtenerCompra(codigoCompra));
+
         }
         emailServicio.enviarEmail(new EmailDTO("Compra realizada.", compraDTO.toString(), cuenta.getEmail()));
 
         return codigoCompra;
     }
 
-    public double calcularPrecio(List<DetalleCompraDTO> detalleCompra, int i, double total){
-        if(i == detalleCompra.size()){
+    public double calcularPrecio(List<DetalleCompraDTO> detalleCompra, int i, double total) {
+        if (i == detalleCompra.size()) {
             return total;
         } else {
             total += detalleCompra.get(i).getPrecioUnidad();
-            return calcularPrecio(detalleCompra, i+1, total);
+            return calcularPrecio(detalleCompra, i + 1, total);
         }
     }
 

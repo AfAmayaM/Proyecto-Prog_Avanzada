@@ -3,6 +3,7 @@ package co.edu.uniquindio.proyecto.proyectotienda.test;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.*;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.MetodoPago;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.CompraServicio;
+import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.ProductoServicio;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.PublicacionServicio;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.UsuarioServicio;
 import org.junit.jupiter.api.Assertions;
@@ -22,6 +23,9 @@ public class CompraTest {
     @Autowired
     private CompraServicio compraServicio;
 
+    @Autowired
+    private PublicacionServicio publicacionServicio;
+
     @Test
     @Sql("classpath:dataset.sql")
     public void crearCompraTest() {
@@ -29,7 +33,7 @@ public class CompraTest {
 
             DetalleCompraDTO detalleCompraDTO = new DetalleCompraDTO(
                     5,
-                    0,
+                    1,
                     2
             );
             CompraDTO compraDTO = new CompraDTO(

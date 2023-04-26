@@ -11,7 +11,6 @@ public interface PublicacionServicio {
 
     int crearPublicacion(PublicacionDTO publicacionDTO) throws Exception;
     PublicacionGetDTO actualizarPublicacion(int codigoPublicacion, PublicacionDTO publicacionDTO) throws Exception;
-
     PublicacionGetDTO actualizarEstado(int codigoPublicacion, EstadoPublicacion estado) throws Exception;
     int eliminarPublicacion(int codigoPublicacion) throws Exception;
     PublicacionGetDTO obtenerPublicacionDTO(int codigoPublicacion) throws Exception;
