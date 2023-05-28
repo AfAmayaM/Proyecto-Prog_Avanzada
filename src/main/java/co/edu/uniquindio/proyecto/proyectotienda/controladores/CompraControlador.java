@@ -3,6 +3,7 @@ package co.edu.uniquindio.proyecto.proyectotienda.controladores;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.CompraDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.CompraGetDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.MensajeDTO;
+import co.edu.uniquindio.proyecto.proyectotienda.dto.PublicacionGetDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.CompraServicio;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -37,5 +38,11 @@ public class CompraControlador {
     public ResponseEntity<MensajeDTO> obtenerCompra(@PathVariable int codigoCompra) throws Exception {
         CompraGetDTO compra = compraServicio.obtenerCompraDTO(codigoCompra);
         return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, compra));
+    }
+
+    @GetMapping("/productosComprados")
+    public ResponseEntity<MensajeDTO> compraUsuarioNoRepetir(@RequestParam int codigoUsuario) throws Exception {
+        List<PublicacionGetDTO> publicaciones = compraServicio.obtenerComprasUsuarioNoRepetir(codigoUsuario);
+        return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, publicaciones));
     }
 }

@@ -1,8 +1,6 @@
 package co.edu.uniquindio.proyecto.proyectotienda.servicios.implementacion;
 
-import co.edu.uniquindio.proyecto.proyectotienda.dto.ProductoGetDTO;
-import co.edu.uniquindio.proyecto.proyectotienda.dto.PublicacionDTO;
-import co.edu.uniquindio.proyecto.proyectotienda.dto.PublicacionGetDTO;
+import co.edu.uniquindio.proyecto.proyectotienda.dto.*;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.*;
 import co.edu.uniquindio.proyecto.proyectotienda.repositorios.PublicacionRepo;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.CloudinaryServicio;
@@ -72,8 +70,10 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     @Transactional
     public int eliminarPublicacion(int codigoPublicacion) throws Exception {
         validarPublicacion(codigoPublicacion);
-        publicacionRepo.deleteById(codigoPublicacion);
-        return codigoPublicacion;
+        Optional<Publicacion> publicacion = publicacionRepo.findById(codigoPublicacion);
+        Publicacion eliminada = publicacion.get();
+        eliminada.setEstado(EstadoPublicacion.ELIMINADO);
+        return publicacionRepo.save(eliminada).getCodigo();
     }
 
     @Override
@@ -133,6 +133,16 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     }
 
     @Override
+    public List<PublicacionGetDTO> listar() throws Exception {
+        List<Publicacion> publicaciones = publicacionRepo.findAll();
+        List<PublicacionGetDTO> publicacionesGetDTO = new ArrayList<>();
+        for (Publicacion publicacion : publicaciones) {
+            publicacionesGetDTO.add(convertir(publicacion));
+        }
+        return publicacionesGetDTO;
+    }
+
+    @Override
     public List<PublicacionGetDTO> listarPublicacionEstado(EstadoPublicacion estado) throws Exception {
         List<Publicacion> publicaciones = publicacionRepo.listarPublicacionEstado(estado);
         List<PublicacionGetDTO> publicacionesGetDTO = new ArrayList<>();
@@ -183,9 +193,37 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     }
 
     @Override
+    public List<PublicacionGetDTO> listarOfertas() throws Exception {
+        List<Publicacion> publicaciones = publicacionRepo.listarOfertas();
+        List<PublicacionGetDTO> publicacionesGetDTO = new ArrayList<>();
+        for (Publicacion publicacion : publicaciones) {
+            publicacionesGetDTO.add(convertir(publicacion));
+        }
+        return publicacionesGetDTO;
+    }
+
+    @Override
+    public List<PublicacionGetDTO> caroBaratoCategoria(Categoria categoria) throws Exception {
+        List<Publicacion> barato = publicacionRepo.baratoCategoria(categoria);
+        List<Publicacion> caro = publicacionRepo.caroCategoria(categoria);
+        System.out.println("caro = " + caro.size() + ", barato = " + barato.size());
+        List<PublicacionGetDTO> publicaciones = new ArrayList<>();
+        publicaciones.add(convertir(barato.get(0)));
+        publicaciones.add(convertir(caro.get(0)));
+        return publicaciones;
+    }
+
+    @Override
     public int cantidadVisitas(int codigoPublicacion) throws Exception {
         validarPublicacion(codigoPublicacion);
         return publicacionRepo.cantidadVisitas(codigoPublicacion);
+    }
+
+    @Override
+    public int actualizarVisitas(VisitaDTO visitaDTO) throws Exception {
+        validarPublicacion(visitaDTO.getCodigoPublicacion());
+
+        return 0;
     }
 
     private void validarPublicacion(int codigoPublicacion) throws Exception {
@@ -208,6 +246,29 @@ public class PublicacionServicioImpl implements PublicacionServicio {
 
     private PublicacionGetDTO convertir(Publicacion publicacion) {
         Producto producto = publicacionRepo.obtenerProductoPublicacion(publicacion.getCodigo());
+        List<Comentario> comentarios = publicacion.getComentarios();
+        List<ComentarioGetDTO> comentariosGetDTO = new ArrayList<>();
+        for (Comentario c : comentarios) {
+            ComentarioGetDTO cgd = new ComentarioGetDTO(
+                    c.getCodigo(),
+                    c.getFechaComentario(),
+                    c.getComentario(),
+                    c.getUsuario().getCodigo(),
+                    c.getPublicacion().getCodigo()
+            );
+            comentariosGetDTO.add(cgd);
+        }
+        List<DetalleCompra> detalles = publicacion.getDetalleCompras();
+        List<DetalleCompraGetDTO> detallesGetDTO = new ArrayList<>();
+        for (DetalleCompra dc : detalles) {
+            DetalleCompraGetDTO dcgd = new DetalleCompraGetDTO(
+                    dc.getCodigo(),
+                    dc.getPublicacion().getCodigo(),
+                    dc.getUnidades(),
+                    dc.getPrecioUnidad()
+            );
+            detallesGetDTO.add(dcgd);
+        }
         return new PublicacionGetDTO(
                 publicacion.getCodigo(),
                 publicacion.getCuenta().getCodigo(),
@@ -215,8 +276,8 @@ public class PublicacionServicioImpl implements PublicacionServicio {
                 publicacion.getFechaLimite(),
                 publicacion.getDescuento(),
                 publicacion.getEstado(),
-                publicacion.getComentarios(),
-                publicacion.getDetalleCompras(),
+                comentariosGetDTO,
+                detallesGetDTO,
                 new ProductoGetDTO(
                         producto.getCodigo(),
                         producto.getNombre(),

@@ -18,10 +18,14 @@ public interface PublicacionServicio {
     Producto obtenerProductoPublicacion(int codigoPublicacion) throws Exception;
     List<PublicacionGetDTO> obtenerPublicacionUsuario(int codigoCuenta) throws Exception;
     List<PublicacionGetDTO> eliminarPublicacionVencida(LocalDateTime fechaLimiteCuenta) throws Exception;
+    List<PublicacionGetDTO> listar() throws Exception;
     List<PublicacionGetDTO> listarPublicacionEstado(EstadoPublicacion estado) throws Exception;
     List<PublicacionGetDTO> listarPublicacionCategoria(Categoria categoria) throws Exception;
     List<PublicacionGetDTO> listarPublicacionFavoritos(int codigoUsuario) throws Exception;
     List<PublicacionGetDTO> listarPublicacionNombre(String nombre) throws Exception;
     List<PublicacionGetDTO> listarPublicacionPrecio(double precioMinimo, double precioMaximo) throws Exception;
+    List<PublicacionGetDTO> listarOfertas() throws Exception;
+    List<PublicacionGetDTO> caroBaratoCategoria(Categoria categoria) throws Exception;
     int cantidadVisitas(int codigoPublicacion) throws Exception;
+    int actualizarVisitas(VisitaDTO visitaDTO) throws Exception;
 }

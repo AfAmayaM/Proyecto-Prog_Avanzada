@@ -184,4 +184,15 @@ public class PublicacionTest {
             throw new RuntimeException(e);
         }
     }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void caroTest() {
+        try {
+            List<PublicacionGetDTO> visitas = publicacionServicio.caroBaratoCategoria(Categoria.TECNOLOGIA);
+            Assertions.assertEquals(2, visitas.size());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

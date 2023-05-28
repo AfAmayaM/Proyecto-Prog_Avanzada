@@ -37,7 +37,7 @@ public class CompraTest {
                     2
             );
             CompraDTO compraDTO = new CompraDTO(
-                    4,
+                    "juanp040223@gmail.com",
                     MetodoPago.EFECTIVO,
                     Arrays.asList(detalleCompraDTO)
             );
@@ -65,6 +65,17 @@ public class CompraTest {
         try {
             CompraGetDTO compra = compraServicio.obtenerCompraDTO(1);
             Assertions.assertNotEquals(0, compra.getValorTotal());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void productosCompradosNoRepetirTest() {
+        try {
+            List<PublicacionGetDTO> comprasNoRepetir = compraServicio.obtenerComprasUsuarioNoRepetir(1);
+            Assertions.assertEquals(2, comprasNoRepetir.size());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

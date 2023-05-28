@@ -27,7 +27,8 @@ public class UsuarioControlador {
 
     @PutMapping("/actualizar/{codigoUsuario}")
     public ResponseEntity<MensajeDTO> actualizarUsuario(@PathVariable int codigoUsuario, @RequestBody @Valid UsuarioDTO usuarioDTO) throws Exception {
-        return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, usuarioServicio.actualizarUsuario(codigoUsuario, usuarioDTO)));
+        usuarioServicio.actualizarUsuario(codigoUsuario, usuarioDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, "Usuario actualizado con éxito."));
     }
 
     @DeleteMapping("/eliminar/{codigoUsuario}")
@@ -53,4 +54,6 @@ public class UsuarioControlador {
         usuarioServicio.eliminarFavorito(codigoCuenta, codigoPublicacion);
         return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, "Favorito eliminado correctamente."));
     }
+
+
 }

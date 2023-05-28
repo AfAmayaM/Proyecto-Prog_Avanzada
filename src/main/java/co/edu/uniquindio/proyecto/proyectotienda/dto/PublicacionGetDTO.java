@@ -24,9 +24,9 @@ public class PublicacionGetDTO {
 
     private EstadoPublicacion estado;
 
-    private List<Comentario> comentarios;
+    private List<ComentarioGetDTO> comentarios;
 
-    private List<DetalleCompra> detalleCompras;
+    private List<DetalleCompraGetDTO> detalleCompras;
 
     private ProductoGetDTO producto;
 }

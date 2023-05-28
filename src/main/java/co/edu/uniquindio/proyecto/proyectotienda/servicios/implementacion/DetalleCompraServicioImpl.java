@@ -8,6 +8,7 @@ import co.edu.uniquindio.proyecto.proyectotienda.modelo.Producto;
 import co.edu.uniquindio.proyecto.proyectotienda.repositorios.DetalleCompraRepo;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -33,15 +34,27 @@ public class DetalleCompraServicioImpl implements DetalleCompraServicio {
     }
 
     @Override
+    @Transactional
     public int crearDetalleCompra(DetalleCompraDTO detalleCompraDTO, Compra compra) throws Exception {
         DetalleCompra detalleCompra = convertir(detalleCompraDTO);
         detalleCompra.setCompra(compra);
         productoServicio.actualizarUnidades(publicacionServicio.obtenerProductoPublicacion(detalleCompraDTO.getCodigoPublicacion()).getCodigo(), detalleCompra.getUnidades());
-        emailServicio.enviarEmail(new EmailDTO("Has vendido un producto.", detalleCompraDTO.toString(), cuentaServicio.buscarCuenta(publicacionServicio.obtenerPublicacionDTO(detalleCompraDTO.getCodigoPublicacion()).getCodigoCuenta()).getEmail()));
+
+        String cuerpoCorreo = "<h1>¡Has vendido un producto!</h1>";
+        cuerpoCorreo += "<p>Detalles de la venta:</p>";
+        cuerpoCorreo += "<ul>";
+        cuerpoCorreo += "<li>Producto: " + detalleCompraDTO.getCodigoPublicacion() + "</li>";
+        cuerpoCorreo += "<li>Unidades: " + detalleCompraDTO.getUnidades() + "</li>";
+        cuerpoCorreo += "<li>Precio por unidad: $" + detalleCompraDTO.getPrecioUnidad() + "</li>";
+        cuerpoCorreo += "</ul>";
+
+
+        emailServicio.enviarEmail(new EmailDTO("Has vendido un producto.", cuerpoCorreo, cuentaServicio.buscarCuenta(publicacionServicio.obtenerPublicacionDTO(detalleCompraDTO.getCodigoPublicacion()).getCodigoCuenta()).getEmail()));
         return detalleCompraRepo.save(detalleCompra).getCodigo();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public DetalleCompra buscarDetalleCompra(int codigoDetalleCompra) throws Exception {
         Optional<DetalleCompra> detalleCompra = detalleCompraRepo.findById(codigoDetalleCompra);
         if (detalleCompra.isEmpty()) {
@@ -51,6 +64,7 @@ public class DetalleCompraServicioImpl implements DetalleCompraServicio {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public DetalleCompraDTO buscarDetalleCompraDTO(int codigoDetalleCompra) throws Exception {
         Optional<DetalleCompra> detalleCompra = detalleCompraRepo.findById(codigoDetalleCompra);
         if (detalleCompra.isEmpty()) {

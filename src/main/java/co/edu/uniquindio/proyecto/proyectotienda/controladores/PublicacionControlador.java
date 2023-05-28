@@ -33,7 +33,7 @@ public class PublicacionControlador {
     @PutMapping("/actualizar/{codigoPublicacion}")
     public ResponseEntity<MensajeDTO> actualizarPublicacion(@PathVariable int codigoPublicacion, @RequestBody @Valid PublicacionDTO publicacionDTO) throws Exception {
         PublicacionGetDTO producto = publicacionServicio.actualizarPublicacion(codigoPublicacion, publicacionDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, producto));
+        return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, "Publicación actualizada correctamente."));
     }
 
     @DeleteMapping("/eliminar/{codigoPublicacion}")
@@ -46,6 +46,12 @@ public class PublicacionControlador {
     public ResponseEntity<MensajeDTO> obtenerPublicacionDTO(@PathVariable int codigoPublicacion) throws Exception {
         PublicacionGetDTO publicacion = publicacionServicio.obtenerPublicacionDTO(codigoPublicacion);
         return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, publicacion));
+    }
+
+    @GetMapping("/listar")
+    public ResponseEntity<MensajeDTO> listar() throws Exception {
+        List<PublicacionGetDTO> publicaciones = publicacionServicio.listar();
+        return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, publicaciones));
     }
 
     @GetMapping("/listar/{codigoCuenta}")
@@ -81,6 +87,17 @@ public class PublicacionControlador {
     @GetMapping("/listarPrecio")
     public ResponseEntity<MensajeDTO> listarPublicacionPrecio(@RequestParam double precioMinimo, @RequestParam double precioMaximo) throws Exception {
         List<PublicacionGetDTO> publicaciones = publicacionServicio.listarPublicacionPrecio(precioMinimo, precioMaximo);
+        return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, publicaciones));
+    }
+
+    @GetMapping("/listarOfertas")
+    public ResponseEntity<MensajeDTO> listarOfertas() throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, publicacionServicio.listarOfertas()));
+    }
+
+    @GetMapping("/caroBaratoCategoria")
+    public ResponseEntity<MensajeDTO> caroBaratoCategoria(@RequestParam Categoria categoria) throws Exception {
+        List<PublicacionGetDTO> publicaciones = publicacionServicio.caroBaratoCategoria(categoria);
         return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false, publicaciones));
     }
 }

@@ -10,17 +10,9 @@ public class VisitaDTO {
 
     @NotNull
     @NotBlank
-    private int codigoVisita;
-
-    @NotNull
-    @NotBlank
     private int codigoPublicacion;
 
     @NotNull
     @NotBlank
     private int codigoCuenta;
-
-    @NotNull
-    @NotBlank
-    private int cantidadVisitas;
 }

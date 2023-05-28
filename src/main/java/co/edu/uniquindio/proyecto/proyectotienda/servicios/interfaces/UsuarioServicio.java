@@ -19,6 +19,4 @@ public interface UsuarioServicio {
     UsuarioGetDTO obtenerUsuarioDTO(int codigoUsuario) throws Exception;
 
     Usuario obtenerUsuario(int codigoUsuario) throws Exception;
-
-
 }

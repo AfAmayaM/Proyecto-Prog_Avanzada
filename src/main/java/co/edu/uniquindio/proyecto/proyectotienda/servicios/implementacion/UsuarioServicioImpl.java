@@ -1,11 +1,7 @@
 package co.edu.uniquindio.proyecto.proyectotienda.servicios.implementacion;
 
-import co.edu.uniquindio.proyecto.proyectotienda.dto.PublicacionGetDTO;
-import co.edu.uniquindio.proyecto.proyectotienda.dto.UsuarioDTO;
-import co.edu.uniquindio.proyecto.proyectotienda.dto.UsuarioGetDTO;
-import co.edu.uniquindio.proyecto.proyectotienda.modelo.EstadoCuenta;
-import co.edu.uniquindio.proyecto.proyectotienda.modelo.Publicacion;
-import co.edu.uniquindio.proyecto.proyectotienda.modelo.Usuario;
+import co.edu.uniquindio.proyecto.proyectotienda.dto.*;
+import co.edu.uniquindio.proyecto.proyectotienda.modelo.*;
 import co.edu.uniquindio.proyecto.proyectotienda.repositorios.UsuarioRepo;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,7 +31,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         this.usuarioRepo = usuarioRepo;
         this.publicacionServicio = publicacionServicio;
         this.cuentaServicio = cuentaServicio;
-        this.  productoServicio = productoServicio;
+        this.productoServicio = productoServicio;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -54,7 +50,6 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     public UsuarioGetDTO actualizarUsuario(int codigoUsuario, UsuarioDTO usuarioDTO) throws Exception {
         validarExiste(codigoUsuario);
         Usuario usuario = convertir(usuarioDTO);
-        usuario.setContrasenia(passwordEncoder.encode(usuarioDTO.getContrasenia()));
         usuario.setCodigo(codigoUsuario);
         usuario.setEstado(usuarioRepo.buscarEstado(codigoUsuario));
         return convertir(usuarioRepo.save(usuario));
@@ -75,6 +70,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         Optional<Usuario> usuarioOpt = usuarioRepo.findById(codigoUsuario);
         List<PublicacionGetDTO> favoritosGetDTO = publicacionServicio.listarPublicacionFavoritos(codigoUsuario);
         List<Publicacion> favoritos = new ArrayList<>();
+
         for(PublicacionGetDTO pgd : favoritosGetDTO) {
             Publicacion p = new Publicacion();
             p.setCodigo(pgd.getCodigo());
@@ -82,8 +78,8 @@ public class UsuarioServicioImpl implements UsuarioServicio {
             p.setProducto(productoServicio.obtenerProducto(pgd.getCodigoProducto()));
             p.setDescuento(pgd.getDescuento());
             p.setEstado(pgd.getEstado());
-            p.setComentarios(pgd.getComentarios());
-            p.setDetalleCompras(pgd.getDetalleCompras());
+            p.setComentarios(obtenerComentarios(pgd.getComentarios()));
+            p.setDetalleCompras(obtenerDetalles(pgd.getDetalleCompras()));
             p.setFechaLimite(pgd.getFechaLimite());
             favoritos.add(p);
         }
@@ -107,8 +103,8 @@ public class UsuarioServicioImpl implements UsuarioServicio {
             p.setProducto(productoServicio.obtenerProducto(pgd.getCodigoProducto()));
             p.setDescuento(pgd.getDescuento());
             p.setEstado(pgd.getEstado());
-            p.setComentarios(pgd.getComentarios());
-            p.setDetalleCompras(pgd.getDetalleCompras());
+            p.setComentarios(obtenerComentarios(pgd.getComentarios()));
+            p.setDetalleCompras(obtenerDetalles(pgd.getDetalleCompras()));
             p.setFechaLimite(pgd.getFechaLimite());
             favoritos.add(p);
         }
@@ -167,6 +163,31 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
 
         return usuario;
+    }
+
+    private List<Comentario> obtenerComentarios(List<ComentarioGetDTO> comentarios) throws Exception {
+        List<Comentario> respuesta = new ArrayList<>();
+        for (ComentarioGetDTO cgd : comentarios) {
+            Comentario c = new Comentario();
+            c.setCodigo(cgd.getCodigo());
+            c.setFechaComentario(cgd.getFecha());
+            c.setComentario(cgd.getMensaje());
+            respuesta.add(c);
+            //respuesta.add(comentarioServicio.obtener(cgd.getCodigo()));
+        }
+        return respuesta;
+    }
+
+    private List<DetalleCompra> obtenerDetalles(List<DetalleCompraGetDTO> detalles) throws Exception {
+        List<DetalleCompra> respuesta = new ArrayList<>();
+        for (DetalleCompraGetDTO dcgd : detalles) {
+            DetalleCompra dc = new DetalleCompra();
+            dc.setUnidades(dcgd.getUnidades());
+            dc.setPrecioUnidad(dcgd.getPrecioUnidad());
+            respuesta.add(dc);
+            //respuesta.add(comentarioServicio.obtener(cgd.getCodigo()));
+        }
+        return respuesta;
     }
 
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ComentarioServicioImpl implements ComentarioServicio {
@@ -51,6 +52,12 @@ public class ComentarioServicioImpl implements ComentarioServicio {
         return comentarios;
     }
 
+    @Override
+    public Comentario obtener(int codigo) throws Exception {
+        Optional<Comentario> comentario = comentarioRepo.findById(codigo);
+        return comentario.get();
+    }
+
     private Comentario convertir(ComentarioDTO comentarioDTO) throws Exception {
         Comentario comentario = new Comentario();
         comentario.setComentario(comentarioDTO.getMensaje());
@@ -68,5 +75,12 @@ public class ComentarioServicioImpl implements ComentarioServicio {
                 comentario.getPublicacion().getCodigo()
         );
         return comentarioGetDTO;
+    }
+
+    private void validar(int codigo) throws Exception {
+        boolean existe = comentarioRepo.existsById(codigo);
+        if(!existe) {
+            throw new Exception("El comentario con el id: " + codigo + " no existe.");
+        }
     }
 }

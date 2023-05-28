@@ -10,7 +10,6 @@ import lombok.Setter;
 @Getter
 public class CuentaGetDTO {
 
-
     private int codigoCuenta;
 
     private EstadoCuenta estado;
@@ -18,6 +17,4 @@ public class CuentaGetDTO {
     private String email;
 
     private String contrasenia;
-
-    private String rol;
 }

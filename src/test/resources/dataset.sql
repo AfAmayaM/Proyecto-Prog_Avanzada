@@ -25,11 +25,11 @@ insert into producto_categorias (producto_codigo, categorias) values (3, 0);
 insert into producto_categorias (producto_codigo, categorias) values (4, 0);
 insert into producto_categorias (producto_codigo, categorias) values (5, 0);
 
-insert into publicacion (estado, descuento, fecha_limite, cuenta_codigo, producto_codigo) values (0, 15, "2023-03-11", 1, 1);
-insert into publicacion (estado, descuento, fecha_limite, cuenta_codigo, producto_codigo) values (0, 0, "2023-05-11", 2, 2);
-insert into publicacion (estado, descuento, fecha_limite, cuenta_codigo, producto_codigo) values (2, 30, "2023-05-11", 3, 3);
-insert into publicacion (estado, descuento, fecha_limite, cuenta_codigo, producto_codigo) values (0, 23, "2023-05-11", 4, 4);
-insert into publicacion (estado, descuento, fecha_limite, cuenta_codigo, producto_codigo) values (1, 8, "2023-05-11", 5, 5);
+insert into publicacion (codigo, estado, descuento, fecha_limite, cuenta_codigo, producto_codigo) values (1, 0, 15, "2023-03-11", 1, 1);
+insert into publicacion (codigo, estado, descuento, fecha_limite, cuenta_codigo, producto_codigo) values (2, 0, 0, "2023-06-11", 2, 2);
+insert into publicacion (codigo, estado, descuento, fecha_limite, cuenta_codigo, producto_codigo) values (3, 2, 30, "2023-06-11", 3, 3);
+insert into publicacion (codigo, estado, descuento, fecha_limite, cuenta_codigo, producto_codigo) values (4, 0, 23, "2023-06-11", 4, 4);
+insert into publicacion (codigo, estado, descuento, fecha_limite, cuenta_codigo, producto_codigo) values (5, 1, 8, "2023-05-11", 5, 5);
 
 insert into favorito (cuenta_codigo, publicacion_codigo) values (1, 2);
 insert into favorito (cuenta_codigo, publicacion_codigo) values (2, 1);
@@ -37,17 +37,20 @@ insert into favorito (cuenta_codigo, publicacion_codigo) values (3, 4);
 insert into favorito (cuenta_codigo, publicacion_codigo) values (4, 5);
 insert into favorito (cuenta_codigo, publicacion_codigo) values (5, 3);
 
-insert into compra (fecha_compra, metodo_pago, total, cuenta_codigo) values ("2023-04-13", 0, 2000000, 2);
-insert into compra (fecha_compra, metodo_pago, total, cuenta_codigo) values ("2021-04-15",1, 450000, 1);
-insert into compra (fecha_compra, metodo_pago, total, cuenta_codigo) values ("2023-04-20", 2, 4000000, 4);
-insert into compra (fecha_compra, metodo_pago, total, cuenta_codigo) values ("2023-04-25",1,150000, 5);
-insert into compra (fecha_compra, metodo_pago, total, cuenta_codigo) values ("2023-04-30",0, 3500000, 3);
+insert into compra (codigo, fecha_compra, metodo_pago, total, cuenta_codigo) values ("1", "2023-04-13", 0, 2000000, 2);
+insert into compra (codigo, fecha_compra, metodo_pago, total, cuenta_codigo) values ("2", "2021-04-15",1, 450000, 1);
+insert into compra (codigo, fecha_compra, metodo_pago, total, cuenta_codigo) values ("3", "2021-04-15",1, 450000, 1);
+insert into compra (codigo, fecha_compra, metodo_pago, total, cuenta_codigo) values ("4", "2023-04-20", 2, 4000000, 4);
+insert into compra (codigo, fecha_compra, metodo_pago, total, cuenta_codigo) values ("5", "2023-04-20", 2, 4000000, 1);
+insert into compra (codigo, fecha_compra, metodo_pago, total, cuenta_codigo) values ("6", "2023-04-25",1,150000, 5);
+insert into compra (codigo, fecha_compra, metodo_pago, total, cuenta_codigo) values ("7", "2023-04-30",0, 3500000, 3);
 
 insert into detalle_compra (unidades, precio_unidad, compra_codigo, publicacion_codigo) values (1, 2000000, 1, 1);
 insert into detalle_compra (unidades, precio_unidad, compra_codigo, publicacion_codigo) values (1, 450000, 2, 2);
-insert into detalle_compra (unidades, precio_unidad, compra_codigo, publicacion_codigo) values (1, 4000000, 3, 3);
-insert into detalle_compra (unidades, precio_unidad, compra_codigo, publicacion_codigo) values (1, 150000, 4, 4);
-insert into detalle_compra (unidades, precio_unidad, compra_codigo, publicacion_codigo) values (1, 3500000, 5, 5);
+insert into detalle_compra (unidades, precio_unidad, compra_codigo, publicacion_codigo) values (1, 4000000, 4, 3);
+insert into detalle_compra (unidades, precio_unidad, compra_codigo, publicacion_codigo) values (1, 4000000, 5, 3);
+insert into detalle_compra (unidades, precio_unidad, compra_codigo, publicacion_codigo) values (1, 150000, 6, 4);
+insert into detalle_compra (unidades, precio_unidad, compra_codigo, publicacion_codigo) values (1, 3500000, 7, 5);
 
 insert into comentario (comentario, fecha_comentario, publicacion_codigo, usuario_codigo) values ("Buen producto", "2023-04-15",1,2);
 insert into comentario (comentario, fecha_comentario, publicacion_codigo, usuario_codigo) values ("Buena calidad", "2023-04-13",2,1);

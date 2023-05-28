@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface PublicacionRepo extends JpaRepository<Publicacion, Integer> {
-    @Query("select p from Publicacion p where p.cuenta.codigo = :codigoCuenta")
+    @Query("select p from Publicacion p where p.cuenta.codigo = :codigoCuenta and p.estado <> 3")
     List<Publicacion> obtenerPublicacionUsuario(int codigoCuenta);
 
     @Query("select p.producto from Publicacion p where p.codigo = :codigoPublicacion")
@@ -22,19 +22,27 @@ public interface PublicacionRepo extends JpaRepository<Publicacion, Integer> {
     @Query("select p from Publicacion p where p.estado = :estado")
     List<Publicacion> listarPublicacionEstado(EstadoPublicacion estado);
 
-    @Query("select p from Publicacion p where p.producto.nombre like concat('%', :nombreProducto, '%')")
+    @Query("select p from Publicacion p where p.producto.nombre like concat('%', :nombreProducto, '%') and p.estado <> 3")
     List<Publicacion> listarPublicacionNombre(String nombreProducto);
 
-    @Query("select p from Publicacion p where p.producto.precio between :precioMinimo and :precioMaximo")
+    @Query("select p from Publicacion p where p.producto.precio between :precioMinimo and :precioMaximo and p.estado <> 3")
     List<Publicacion> listarPublicacionPrecio(double precioMinimo, double precioMaximo);
 
-    @Query("select p from Publicacion p join p.producto.categorias c where c = :categoria")
+    @Query("select p from Publicacion p join p.producto.categorias c where c = :categoria and p.estado <> 3")
     List<Publicacion> listarPublicacionCategoria(Categoria categoria);
 
-    @Query("select f from Usuario u join u.favoritos f where u.codigo = :codigoUsuario")
+    @Query("select p2 from Publicacion p2 join p2.producto.categorias c where c = :categoria and p2.producto.precio = (select min(p.producto.precio) from Publicacion p where p.estado <> 3) and p2.estado <> 3")
+    List<Publicacion> baratoCategoria(Categoria categoria);
+
+    @Query("select p2 from Publicacion p2 join p2.producto.categorias c where c = :categoria and p2.producto.precio = (select max(p.producto.precio) from Publicacion p where p.estado <> 3) and p2.estado <> 3")
+    List<Publicacion> caroCategoria(Categoria categoria);
+
+    @Query("select f from Usuario u join u.favoritos f where u.codigo = :codigoUsuario and f.estado <> 3")
     List<Publicacion> listarPublicacionFavoritos(int codigoUsuario);
+
+    @Query("select p from Publicacion p where p.descuento <> 0 and p.estado <> 3")
+    List<Publicacion> listarOfertas();
 
     @Query("select count(v) from Usuario u join u.visitas v where v.codigo = :codigoPublicacion")
     Integer cantidadVisitas(int codigoPublicacion);
-
 }
