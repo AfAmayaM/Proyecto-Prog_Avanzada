@@ -3,6 +3,8 @@ package co.edu.uniquindio.proyecto.proyectotienda.servicios.implementacion;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.CuentaGetDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.dto.EmailDTO;
 import co.edu.uniquindio.proyecto.proyectotienda.modelo.Cuenta;
+import co.edu.uniquindio.proyecto.proyectotienda.modelo.Moderador;
+import co.edu.uniquindio.proyecto.proyectotienda.modelo.Usuario;
 import co.edu.uniquindio.proyecto.proyectotienda.repositorios.CuentaRepo;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.CuentaServicio;
 import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.EmailServicio;
@@ -73,8 +75,15 @@ public class CuentaServicioImpl implements CuentaServicio {
     }
 
     private CuentaGetDTO convertir(Cuenta cuenta) {
+        String rol = "";
+        if(cuenta instanceof Usuario){
+            rol = "Cliente";
+        } else if(cuenta instanceof Moderador){
+            rol = "Moderador";
+        }
         return new CuentaGetDTO(
                 cuenta.getCodigo(),
+                rol,
                 cuenta.getEstado(),
                 cuenta.getEmail(),
                 cuenta.getContrasenia()

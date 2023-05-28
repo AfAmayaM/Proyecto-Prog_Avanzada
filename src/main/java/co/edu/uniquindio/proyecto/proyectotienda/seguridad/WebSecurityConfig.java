@@ -25,10 +25,18 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.cors();
-        http.authorizeHttpRequests().anyRequest().permitAll();
-        //http.authorizeHttpRequests().requestMatchers("/api/auth/**", "/api/usuarios/crear", "/api/cuenta/cambiarContra", "/api/categorias/listar").permitAll()
-                //.requestMatchers("/api/comentario/crear", "/api/comentario/listar").hasAuthority("USUARIO")
-                //.requestMatchers("/api/moderador/**", "/api/publicacion/listarEstado").hasAuthority("MODERADOR").anyRequest().authenticated();
+        http.authorizeHttpRequests().requestMatchers("/api/auth/**",
+                        "/api/usuarios/crear",
+                        "/api/cuenta/cambiarContra",
+                        "/api/categorias/listar",
+                        "/api/publicacion/listarNombre",
+                        "/api/publicacion/listarCategoria",
+                        "/api/publicacion/listarPrecio",
+                        "/api/publicacion/listarOfertas",
+                        "/api/publicacion/obtener/**",
+                        "/api/usuarios/obtener/**").permitAll()
+                .requestMatchers("/api/comentario/crear", "/api/comentario/listar").hasAuthority("CLIENTE")
+                .requestMatchers("/api/moderador/**", "/api/publicacion/listarEstado").hasAuthority("MODERADOR").anyRequest().authenticated();
         http.exceptionHandling().authenticationEntryPoint(jwtEntryPoint);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authenticationProvider(authenticationProvider);

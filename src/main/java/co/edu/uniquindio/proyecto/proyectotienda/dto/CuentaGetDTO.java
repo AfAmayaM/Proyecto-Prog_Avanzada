@@ -12,6 +12,8 @@ public class CuentaGetDTO {
 
     private int codigoCuenta;
 
+    private String rol;
+
     private EstadoCuenta estado;
 
     private String email;
