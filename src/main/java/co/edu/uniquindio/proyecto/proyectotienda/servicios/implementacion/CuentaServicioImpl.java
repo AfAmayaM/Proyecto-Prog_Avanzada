@@ -62,7 +62,7 @@ public class CuentaServicioImpl implements CuentaServicio {
     @Override
     public void recuperarContrasenia(String email) throws Exception {
         validar(email);
-        String cuerpo = "Para completar tu cambio de contraseña ingresa en este enlace: http://localhost:4200/cambiar-contra/" + email +
+        String cuerpo = "Para completar tu cambio de contraseña ingresa en este enlace: https://app-frontend-proyecto-uq-8ca60.web.app/cambiar-contra/" + email +
                 "<br/>Si no has sido tu ignora este mensaje.";
         emailServicio.enviarEmail(new EmailDTO("Recuperación contraseña", cuerpo, email));
     }
