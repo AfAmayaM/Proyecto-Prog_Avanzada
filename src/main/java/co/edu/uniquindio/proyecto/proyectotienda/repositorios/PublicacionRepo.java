@@ -26,7 +26,7 @@ public interface PublicacionRepo extends JpaRepository<Publicacion, Integer> {
     @Query("select p from Publicacion p where p.estado = :estado")
     List<Publicacion> listarPublicacionEstado(EstadoPublicacion estado);
 
-    @Query("select p from Publicacion p where p.producto.nombre like concat('%', :nombreProducto, '%') and p.estado = 1 and p.fechaLimite > current_date")
+    @Query("select p from Publicacion p where lower(p.producto.nombre) like %:nombreProducto% and p.estado = 1 and p.fechaLimite > current_date")
     List<Publicacion> listarPublicacionNombre(String nombreProducto);
 
     @Query("select p from Publicacion p where p.producto.precio between :precioMinimo and :precioMaximo and p.estado = 1 and p.fechaLimite > current_date")

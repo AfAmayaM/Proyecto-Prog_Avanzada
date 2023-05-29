@@ -174,7 +174,7 @@ public class PublicacionServicioImpl implements PublicacionServicio {
 
     @Override
     public List<PublicacionGetDTO> listarPublicacionNombre(String nombre) throws Exception {
-        List<Publicacion> publicaciones = publicacionRepo.listarPublicacionNombre(nombre);
+        List<Publicacion> publicaciones = publicacionRepo.listarPublicacionNombre(nombre.toLowerCase());
         List<PublicacionGetDTO> publicacionesGetDTO = new ArrayList<>();
         for(Publicacion publicacion : publicaciones){
             publicacionesGetDTO.add(convertir(publicacion));
