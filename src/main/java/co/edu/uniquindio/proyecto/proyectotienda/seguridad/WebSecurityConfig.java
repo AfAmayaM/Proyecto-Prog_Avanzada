@@ -28,6 +28,7 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests().requestMatchers("/api/auth/**",
                         "/api/usuarios/crear",
                         "/api/cuenta/cambiarContra",
+                        "/api/cuenta/recuperarContra",
                         "/api/categorias/listar",
                         "/api/publicacion/listarNombre",
                         "/api/publicacion/listarCategoria",
