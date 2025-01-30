@@ -40,7 +40,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     public int crearUsuario(UsuarioDTO usuarioDTO) throws Exception {
         cuentaServicio.existeEmail(usuarioDTO.getEmail());
         Usuario usuario = convertir(usuarioDTO);
-        usuario.setContrasenia(passwordEncoder.encode(usuario.getContrasenia()));
+        usuario.setContrasenia(usuario.getContrasenia().isEmpty() ? null : passwordEncoder.encode(usuario.getContrasenia()));
         usuario.setEstado(EstadoCuenta.ACTIVA);
         return usuarioRepo.save(usuario).getCodigo();
     }

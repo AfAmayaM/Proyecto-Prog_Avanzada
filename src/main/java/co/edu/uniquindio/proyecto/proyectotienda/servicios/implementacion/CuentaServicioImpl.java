@@ -11,6 +11,7 @@ import co.edu.uniquindio.proyecto.proyectotienda.servicios.interfaces.EmailServi
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.security.auth.login.AccountNotFoundException;
 import java.util.Optional;
 
 @Service
@@ -41,7 +42,7 @@ public class CuentaServicioImpl implements CuentaServicio {
     public Cuenta buscarCuentaEmail(String email) throws Exception {
         Cuenta cuenta = cuentaRepo.findByEmail(email);
         if (cuenta == null) {
-            throw new Exception("No hay ninguna cuenta con el email " + email);
+            throw new AccountNotFoundException("No hay ninguna cuenta con el email " + email);
         }
         return cuenta;
     }
